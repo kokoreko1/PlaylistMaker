@@ -7,14 +7,14 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp">
+        android:layout_height="@dimen/panel_height">
 
         <ImageView
             android:id="@+id/image_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="@dimen/padding_primary"
             android:src="@drawable/arrow_back"
             android:contentDescription="@string/settings"/>
 
@@ -24,107 +24,102 @@
             android:layout_gravity="center|center_vertical"
             android:text="@string/settings"
             android:textColor="@color/black"
-            android:textSize="22sp" />
+            android:textSize="@dimen/primary_text_size" />
 
     </FrameLayout>
 
-    <LinearLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="@dimen/panel_height">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="61dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="@dimen/padding_primary"
+            android:text="@string/dark_theme"
+            android:textColor="@color/black"
+            android:textSize="@dimen/panel_text_size" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
-                android:layout_marginStart="16dp"
-                android:text="@string/dark_theme"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="24dp"
+            android:src="@drawable/resource_switch"
+            android:contentDescription="@string/dark_theme"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="24dp"
-                android:src="@drawable/resource_switch"
-                android:contentDescription="@string/dark_theme"/>
+    </FrameLayout>
 
-        </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/panel_height">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="61dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="@dimen/padding_primary"
+            android:text="@string/share_the_app"
+            android:textColor="@color/black"
+            android:textSize="@dimen/panel_text_size" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
-                android:layout_marginStart="16dp"
-                android:text="@string/share_the_app"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="@dimen/padding_primary"
+            android:src="@drawable/share"
+            android:contentDescription="@string/share_the_app"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="24dp"
-                android:src="@drawable/share"
-                android:contentDescription="@string/share_the_app"/>
+    </FrameLayout>
 
-        </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/panel_height">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="61dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="@dimen/padding_primary"
+            android:text="@string/write_to_support"
+            android:textColor="@color/black"
+            android:textSize="@dimen/panel_text_size" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
-                android:layout_marginStart="16dp"
-                android:text="@string/write_to_support"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="@dimen/padding_primary"
+            android:src="@drawable/support"
+            android:contentDescription="@string/write_to_support"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="24dp"
-                android:src="@drawable/support"
-                android:contentDescription="@string/write_to_support"/>
+    </FrameLayout>
 
-        </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/panel_height">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="61dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="@dimen/padding_primary"
+            android:text="@string/user_agreement"
+            android:textColor="@color/black"
+            android:textSize="@dimen/panel_text_size" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
-                android:layout_marginStart="16dp"
-                android:text="@string/user_agreement"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="@dimen/padding_primary"
+            android:src="@drawable/arrow_forward"
+            android:contentDescription="@string/user_agreement"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="24dp"
-                android:src="@drawable/arrow_forward"
-                android:contentDescription="@string/user_agreement"/>
+    </FrameLayout>
 
-        </FrameLayout>
-
-    </LinearLayout>
 
 </LinearLayout>

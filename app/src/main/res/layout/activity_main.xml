@@ -6,27 +6,21 @@
     android:orientation="vertical"
     android:background="@color/playlist_background">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="56dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:paddingLeft="16dp"
-            android:paddingTop="14dp"
-            android:text="@string/app_name"
-            android:textColor="@color/white"
-            android:textSize="22sp" />
-
-    </FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_gravity="start"
+        android:paddingLeft="@dimen/padding_primary"
+        android:paddingTop="@dimen/padding_primary"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="@dimen/primary_text_size" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/padding_primary">
 
         <Button
             android:id="@+id/button_search"
@@ -37,11 +31,11 @@
             android:text="@string/search"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textSize="22sp"
-            app:cornerRadius="15dp"
-            app:icon="@drawable/vector_search"
+            android:textSize="@dimen/primary_text_size"
+            app:cornerRadius="@dimen/radius_button"
+            app:icon="@drawable/search"
             app:iconGravity="textStart"
-            app:iconPadding="8dp"
+            app:iconPadding="@dimen/padding_primary"
             app:iconTint="@color/black" />
 
         <Button
@@ -53,11 +47,11 @@
             android:text="@string/library"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textSize="22sp"
-            app:cornerRadius="16dp"
-            app:icon="@drawable/vector_library"
+            android:textSize="@dimen/primary_text_size"
+            app:cornerRadius="@dimen/radius_button"
+            app:icon="@drawable/library"
             app:iconGravity="textStart"
-            app:iconPadding="8dp"
+            app:iconPadding="@dimen/padding_primary"
             app:iconTint="@color/black" />
 
         <Button
@@ -69,11 +63,11 @@
             android:text="@string/settings"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textSize="22sp"
-            app:cornerRadius="16dp"
-            app:icon="@drawable/vector_settings"
+            android:textSize="@dimen/primary_text_size"
+            app:cornerRadius="@dimen/radius_button"
+            app:icon="@drawable/settings"
             app:iconGravity="textStart"
-            app:iconPadding="8dp"
+            app:iconPadding="@dimen/padding_primary"
             app:iconTint="@color/black" />
 
     </LinearLayout>
