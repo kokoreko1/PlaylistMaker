@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -13,11 +14,11 @@ class SettingsActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_settings)
 
+        ///////////////////////////////
+        // кнопка Возврат
         val imageBack = findViewById<ImageView>(R.id.image_back)
 
         imageBack.setOnClickListener {
-//            val displayIntent = Intent(this, MainActivity::class.java)
-//            startActivity(displayIntent)
             finish()
         }
 

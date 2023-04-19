@@ -14,5 +14,5 @@
       android:strokeAlpha="0.6"
       android:fillType="evenOdd"
       android:fillAlpha="0.6"
-      android:fillColor = "@color/gray"/>
+      android:fillColor = "@color/white"/>
 </vector>

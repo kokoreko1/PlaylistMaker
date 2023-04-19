@@ -23,19 +23,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(displayIntent)
         }
 
-//        val buttonSearchClickListener: View.OnClickListener = object : View.OnClickListener {
-//            override fun onClick(v: View?) {
-//                Toast.makeText(this@MainActivity, "Нажали на кнопку Поиск", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//
-//        buttonSearch.setOnClickListener(buttonSearchClickListener)
-//
-//        // лямбда
-//        buttonSearch.setOnClickListener {
-//            Toast.makeText(this@MainActivity, "Нажали на кнопку Поиск (лямбда)", Toast.LENGTH_SHORT).show()
-//        }
-
         ///////////////////////////////
         // кнопка Медиатека
         val buttonLibrary = findViewById<Button>(R.id.button_library)
@@ -45,19 +32,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(displayIntent)
         }
 
-//        val buttonLibraryClickListener: View.OnClickListener = object : View.OnClickListener {
-//            override fun onClick(v: View?) {
-//                Toast.makeText(this@MainActivity, "Нажали на кнопку Медиатека", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//
-//        buttonLibrary.setOnClickListener(buttonLibraryClickListener)
-//
-//        // лямбда
-//        buttonMedia.setOnClickListener {
-//            Toast.makeText(this@MainActivity, "Нажали на кнопку Медиатека (лямбда)", Toast.LENGTH_SHORT).show()
-//        }
-
         ///////////////////////////////
         // кнопка Настройка
         val buttonSettings = findViewById<Button>(R.id.button_settings)
@@ -66,10 +40,6 @@ class MainActivity : AppCompatActivity() {
             val displayIntent = Intent(this, SettingsActivity::class.java)
             startActivity(displayIntent)
         }
-
-//        buttonSettings.setOnClickListener {
-//            Toast.makeText(this@MainActivity, "Нажали на кнопку Настройки (лямбда)", Toast.LENGTH_SHORT).show()
-//        }
 
     }
 }
