@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         buttonSearch.setOnClickListener {
             val displayIntent = Intent(this, SearchActivity::class.java)
+
             startActivity(displayIntent)
         }
 
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         buttonLibrary.setOnClickListener {
             val displayIntent = Intent(this, LibraryActivity::class.java)
+
             startActivity(displayIntent)
         }
 

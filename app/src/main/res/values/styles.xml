@@ -13,7 +13,7 @@
     <!-- activity main -->
     <!-- *****************************-->
 
-    <style name="Button_Style_main" parent="Widget.MaterialComponents.Button">
+    <style name="Button_Style_main" parent="Widget.MaterialComponents.Button.UnelevatedButton">
 
         <item name="android:textColor">@color/black</item>
         <item name="android:backgroundTint">@color/white</item>
