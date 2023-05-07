@@ -27,14 +27,13 @@ class SettingsActivity : AppCompatActivity() {
 
         imageShare.setOnClickListener {
 
-            val androidDeveloper_url = getString(R.string.androidDeveloper_url)
+            val androidDeveloperUrl = getString(R.string.androidDeveloper_url)
 
-            val shareIntent = Intent()
-
-            shareIntent.action = Intent.ACTION_SEND
-            shareIntent.type = "text/plain"
-
-            shareIntent.putExtra(Intent.EXTRA_TEXT, androidDeveloper_url)
+            val shareIntent = Intent().apply {
+                this.action = Intent.ACTION_SEND
+                this.type = "text/plain"
+                this.putExtra(Intent.EXTRA_TEXT, androidDeveloperUrl)
+            }
 
             startActivity(Intent.createChooser(shareIntent,"Share via"))
 
@@ -49,15 +48,13 @@ class SettingsActivity : AppCompatActivity() {
             val message = getString(R.string.support_message)
             val subject = getString(R.string.support_subject)
 
-            val shareIntent = Intent()
-
-            shareIntent.action = Intent.ACTION_SENDTO
-
-            shareIntent.data = Uri.parse("mailto:")
-
-            shareIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_email)))
-            shareIntent.putExtra(Intent.EXTRA_TEXT, message)
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+            val shareIntent = Intent().apply {
+                this.action = Intent.ACTION_SENDTO
+                this.data = Uri.parse("mailto:")
+                this.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_email)))
+                this.putExtra(Intent.EXTRA_TEXT, message)
+                this.putExtra(Intent.EXTRA_SUBJECT, subject)
+            }
 
             startActivity(shareIntent)
 
@@ -71,10 +68,10 @@ class SettingsActivity : AppCompatActivity() {
 
             val url = Uri.parse(getString(R.string.agreement_url))
 
-            val shareIntent = Intent()
-
-            shareIntent.action = Intent.ACTION_VIEW
-            shareIntent.data = url
+            val shareIntent = Intent().apply {
+                this.action = Intent.ACTION_VIEW
+                this.data = url
+            }
 
             startActivity(shareIntent)
 

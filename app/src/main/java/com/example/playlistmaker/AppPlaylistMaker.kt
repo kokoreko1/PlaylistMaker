@@ -4,9 +4,7 @@ import android.app.Application
 
 class AppPlaylistMaker: Application() {
 
-    companion object {
-        var globalVarSavedSearchText = ""
-    }
+    var globalVarSavedSearchText = ""
 
     override fun onCreate() {
         super.onCreate()

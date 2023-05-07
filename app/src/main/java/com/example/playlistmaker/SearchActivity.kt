@@ -4,12 +4,11 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
-import com.example.playlistmaker.AppPlaylistMaker.Companion.globalVarSavedSearchText
+import androidx.core.view.isVisible
 
 class SearchActivity : AppCompatActivity() {
 
@@ -20,7 +19,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         val searchEditText = findViewById<EditText>(R.id.searchEditText)
-        searchEditText.setText(globalVarSavedSearchText)
+        searchEditText.setText((application as AppPlaylistMaker).globalVarSavedSearchText)
 
         //////////////////////////////////////////////////////
         // кнопка Возврат
@@ -40,13 +39,10 @@ class SearchActivity : AppCompatActivity() {
         //////////////////////////////////////////////////////
         // TextWatcher
 
-        val simpleTextWatcher = object : TextWatcher {
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+        val simpleTextWatcher = object : SimpleTextWatcher {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.visibility = clearButtonVisibility(s)
+                clearButton.isVisible = !s.isNullOrEmpty()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -57,13 +53,6 @@ class SearchActivity : AppCompatActivity() {
         searchEditText.addTextChangedListener(simpleTextWatcher)
     }
 
-    private fun clearButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -85,6 +74,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun saveSearchText(s: Editable?) {
-        globalVarSavedSearchText = s.toString()
+        (application as AppPlaylistMaker).globalVarSavedSearchText = s.toString()
     }
 }
