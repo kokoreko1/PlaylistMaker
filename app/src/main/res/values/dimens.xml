@@ -4,6 +4,7 @@
     <dimen name="primary_text_size">22sp</dimen>
     <dimen name="panel_text_size">16sp</dimen>
     <dimen name="text_size_edittext">16sp</dimen>
+    <dimen name="text_size_11">11sp</dimen>
 
     <dimen name="radius_button">16dp</dimen>
     <dimen name="panel_height">64dp</dimen>

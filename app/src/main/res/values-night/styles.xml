@@ -9,6 +9,11 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="TextView_Style_gray">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
     <!-- *****************************-->
     <!-- activity main -->
     <!-- *****************************-->
