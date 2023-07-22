@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="61dp"
+    android:layout_height="60dp"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -11,17 +11,13 @@
         android:id="@+id/track_icon"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_marginStart="@dimen/margin_primary_dvd_2"
-        android:layout_marginTop="@dimen/margin_primary_dvd_2"
-        android:layout_marginEnd="@dimen/margin_primary_dvd_2"
-        android:layout_marginBottom="@dimen/margin_primary_dvd_2"
+        android:layout_margin="@dimen/margin_primary_dvd_2"
         android:src="@drawable/barsik" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_primary_dvd_2"
-        android:layout_marginBottom="@dimen/margin_primary_dvd_2"
+        android:layout_marginVertical="@dimen/margin_primary_dvd_2"
         android:layout_weight="2"
         android:orientation="vertical">
 
@@ -73,10 +69,7 @@
         android:id="@+id/image_forward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="@dimen/margin_primary_dvd_2"
         android:src="@drawable/arrow_forward24" />
 
 

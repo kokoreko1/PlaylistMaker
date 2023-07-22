@@ -7,6 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
+
+
 class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
 
     private val trackName: TextView = itemView.findViewById(R.id.track_name)
@@ -17,6 +21,8 @@ class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
 
     fun bind(track: Track) {
 
+        val application = AppPlaylistMaker()
+
         trackName.text = track.trackName
         artistName.text = track.artistName
         trackTime.text = track.trackTime
@@ -25,7 +31,7 @@ class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
             .load(track.artworkUrl100)
             .placeholder(R.drawable.barsik)
             .centerCrop()
-            .transform(RoundedCorners(10))
+            .transform(RoundedCorners(application.globalValRoundingRadius))
             .into(trackImage)
 
     }

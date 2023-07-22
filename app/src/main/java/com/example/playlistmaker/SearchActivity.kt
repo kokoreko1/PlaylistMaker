@@ -15,36 +15,33 @@ import kotlin.random.Random
 
 
 class SearchActivity : AppCompatActivity() {
+
     private val tracks: MutableList<Track> = mutableListOf()
     lateinit var adapter: TracksAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_search)
 
         val searchEditText = findViewById<EditText>(R.id.searchEditText)
         searchEditText.setText((application as AppPlaylistMaker).globalVarSavedSearchText)
 
-        //////////////////////////////////////////////////////
         // кнопка Возврат
         val imageBack = findViewById<ImageView>(R.id.image_back)
         imageBack.setOnClickListener {
             finish()
         }
 
-        //////////////////////////////////////////////////////
         // кнопка Очистки поля inputEditText
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
+
         clearButton.setOnClickListener {
             searchEditText.setText("")
             hideSoftKeyboard(it)
         }
 
-        //////////////////////////////////////////////////////
         // TextWatcher
-
         val simpleTextWatcher = object : SimpleTextWatcher {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -58,9 +55,7 @@ class SearchActivity : AppCompatActivity() {
 
         searchEditText.addTextChangedListener(simpleTextWatcher)
 
-        //////////////////////////////////////////////////////
         // RecycleView
-
         val recyclerViewTracks = findViewById<RecyclerView>(R.id.recycler_view_tracks)
         recyclerViewTracks.layoutManager = LinearLayoutManager(this)
 

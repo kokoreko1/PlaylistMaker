@@ -18,8 +18,6 @@ class TracksAdapter(private val tracks: MutableList<Track>) : RecyclerView.Adapt
         holder.bind(tracks[position])
     }
 
-    override fun getItemCount(): Int {
-        return tracks.size
-    }
+    override fun getItemCount() = tracks.size
 
 }
