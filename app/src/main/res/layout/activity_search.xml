@@ -61,7 +61,9 @@
             android:hint="@string/search"
             android:inputType="text"
             android:lines="1"
-            android:textSize="@dimen/text_size_edittext"/>
+            android:textSize="@dimen/text_size_edittext"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
 
         <ImageView
             style="@style/Image_Style_search"
