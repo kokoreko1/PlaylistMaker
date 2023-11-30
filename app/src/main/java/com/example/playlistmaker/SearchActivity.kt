@@ -25,16 +25,17 @@ import kotlin.random.Random
 class SearchActivity : AppCompatActivity() {
 
     private val tracks: MutableList<Track> = mutableListOf()
+
     lateinit var adapter: TracksAdapter
 
-    private val itunesBaseUrl = "https://itunes.apple.com"
+    private val iTunesBaseUrl = "https://itunes.apple.com"
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl(itunesBaseUrl)
+        .baseUrl(iTunesBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val itunesService: ItunesAPI = retrofit.create(ItunesAPI::class.java)
+    val itunesService: ITunesAPI = retrofit.create(ITunesAPI::class.java)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,7 +128,7 @@ class SearchActivity : AppCompatActivity() {
 
 
     private fun hideSoftKeyboard(view: View) {
-        val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         manager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
