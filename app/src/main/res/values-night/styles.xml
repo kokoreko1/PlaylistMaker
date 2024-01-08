@@ -73,4 +73,13 @@
         <item name="android:background">@color/white</item>
     </style>
 
+    <style name="Button_Style_search">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="LinearLayout_Style_search">
+        <item name="android:background">@color/black</item>
+    </style>
+
 </resources>
