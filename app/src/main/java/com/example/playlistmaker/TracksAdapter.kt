@@ -23,31 +23,3 @@ class TracksAdapter(private val tracks: MutableList<Track>?) : RecyclerView.Adap
         return tracks?.size ?:0
     }
 }
-
-class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
-
-    private val trackName: TextView = itemView.findViewById(R.id.track_name)
-    private val artistName: TextView = itemView.findViewById(R.id.artist_name)
-    private val trackTime: TextView = itemView.findViewById(R.id.track_time)
-
-    private val trackImage: ImageView = itemView.findViewById(R.id.track_icon)
-
-    val dateFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
-
-    fun bind(track: Track) {
-
-        val application = AppPlaylistMaker()
-
-        trackName.text = track.trackName
-        artistName.text = track.artistName
-        trackTime.text = dateFormat.format(track.trackTime)
-
-        Glide.with(itemView)
-            .load(track.artworkUrl100)
-            .placeholder(R.drawable.barsik)
-            .centerCrop()
-            .transform(RoundedCorners(application.globalValRoundingRadius))
-            .into(trackImage)
-
-    }
-}
