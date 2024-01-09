@@ -6,6 +6,7 @@
 /.idea/modules.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/.idea/compiler.xml
 .DS_Store
 /build
 /captures
