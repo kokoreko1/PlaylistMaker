@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +14,13 @@ class SettingsActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_settings)
 
-        ///////////////////////////////
+        // Переключатель Темная тема
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as AppPlaylistMaker).switchTheme(checked)
+        }
+
         // кнопка Возврат
         val imageBack = findViewById<ImageView>(R.id.image_back)
 
@@ -21,7 +28,6 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
-        /////////////////////////////////////////
         // кнопка Поделиться приложением
         val imageShare = findViewById<ImageView>(R.id.image_share)
 
@@ -39,7 +45,6 @@ class SettingsActivity : AppCompatActivity() {
 
         }
 
-        /////////////////////////////////////////
         // кнопка Написать в поддержку
         val imageSupport = findViewById<ImageView>(R.id.image_support)
 
@@ -60,7 +65,6 @@ class SettingsActivity : AppCompatActivity() {
 
         }
 
-        /////////////////////////////////////////
         // кнопка Пользовательское соглашение
         val imageAgreement = findViewById<ImageView>(R.id.image_agreement)
 
