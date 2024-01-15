@@ -15,6 +15,10 @@
     <string name="support_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="support_email">kokoreko@ya.ru</string>
 
+    <string name="nothing_was_found">Ничего не нашлось</string>
+    <string name="connection_problems">Проблемы со связью \n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="search_update">Обновить</string>
+
     <string name="agreement_url">https://yandex.ru/legal/practicum_offer/</string>
 
     <string name="androidDeveloper_url">https://practicum.yandex.ru/android-developer/</string>
