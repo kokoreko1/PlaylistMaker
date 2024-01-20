@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -36,6 +37,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_search)
 
         val ivNothingWasFound = findViewById<ImageView>(R.id.image_nothing_was_found)
@@ -55,6 +57,16 @@ class SearchActivity : AppCompatActivity() {
         ivBack.setOnClickListener {
             finish()
         }
+
+        // история поиска
+        val vgLookFor = findViewById<ViewGroup>(R.id.view_group_history)
+        etSearch.setOnFocusChangeListener { view, hasFocus ->
+            vgLookFor.visibility = if (hasFocus && etSearch.text.isEmpty()) View.VISIBLE else View.GONE
+        }
+
+        val rvTracksHistory = findViewById<RecyclerView>(R.id.recycler_view_tracks_history)
+        rvTracksHistory.layoutManager = LinearLayoutManager(this)
+
 
         // RecycleView
         val rvTracks = findViewById<RecyclerView>(R.id.recycler_view_tracks)
@@ -79,6 +91,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 btClear.isVisible = !s.isNullOrEmpty()
+                vgLookFor.visibility = if (etSearch.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
             }
 
             override fun afterTextChanged(s: Editable?) {

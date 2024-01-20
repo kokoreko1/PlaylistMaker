@@ -15,23 +15,23 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         // Переключатель Темная тема
-        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+        val swTheme = findViewById<SwitchMaterial>(R.id.themeSwitcher)
 
-        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+        swTheme.setOnCheckedChangeListener { switcher, checked ->
             (applicationContext as AppPlaylistMaker).switchTheme(checked)
         }
 
         // кнопка Возврат
-        val imageBack = findViewById<ImageView>(R.id.image_back)
+        val ivBack = findViewById<ImageView>(R.id.image_back)
 
-        imageBack.setOnClickListener {
+        ivBack.setOnClickListener {
             finish()
         }
 
         // кнопка Поделиться приложением
-        val imageShare = findViewById<ImageView>(R.id.image_share)
+        val ivShare = findViewById<ImageView>(R.id.image_share)
 
-        imageShare.setOnClickListener {
+        ivShare.setOnClickListener {
 
             val androidDeveloperUrl = getString(R.string.androidDeveloper_url)
 
@@ -46,9 +46,9 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         // кнопка Написать в поддержку
-        val imageSupport = findViewById<ImageView>(R.id.image_support)
+        val ivSupport = findViewById<ImageView>(R.id.image_support)
 
-        imageSupport.setOnClickListener {
+        ivSupport.setOnClickListener {
 
             val message = getString(R.string.support_message)
             val subject = getString(R.string.support_subject)
@@ -66,9 +66,9 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         // кнопка Пользовательское соглашение
-        val imageAgreement = findViewById<ImageView>(R.id.image_agreement)
+        val ivAgreement = findViewById<ImageView>(R.id.image_agreement)
 
-        imageAgreement.setOnClickListener {
+        ivAgreement.setOnClickListener {
 
             val url = Uri.parse(getString(R.string.agreement_url))
 

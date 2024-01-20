@@ -9,21 +9,19 @@ class AppPlaylistMaker: Application() {
 
     val globalValRoundingRadius = 10
 
-    var darkTheme = false
-
-    override fun onCreate() {
-        super.onCreate()
-    }
+    var globalVarDarkTheme = false
 
     fun switchTheme(darkThemeEnabled: Boolean) {
-        darkTheme = darkThemeEnabled
-        AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled) {
-                AppCompatDelegate.MODE_NIGHT_YES
-            } else {
-                AppCompatDelegate.MODE_NIGHT_NO
-            }
-        )
+
+        globalVarDarkTheme = darkThemeEnabled
+
+//        AppCompatDelegate.setDefaultNightMode(
+//            if (darkThemeEnabled) {
+//                AppCompatDelegate.MODE_NIGHT_YES
+//            } else {
+//                AppCompatDelegate.MODE_NIGHT_NO
+//            }
+//        )
     }
 
 }
