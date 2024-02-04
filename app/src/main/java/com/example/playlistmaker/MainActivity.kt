@@ -7,9 +7,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 
-const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
-const val DARK_THEME = "dark_theme"
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,5 +55,9 @@ class MainActivity : AppCompatActivity() {
             .putBoolean(DARK_THEME, (application as AppPlaylistMaker).globalVarDarkTheme)
             .apply()
 
+    }
+    companion object {
+        const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
+        const val DARK_THEME = "dark_theme"
     }
 }

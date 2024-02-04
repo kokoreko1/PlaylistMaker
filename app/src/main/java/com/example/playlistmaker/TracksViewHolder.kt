@@ -2,7 +2,9 @@ package com.example.playlistmaker
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -19,6 +21,8 @@ class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
 
     val dateFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
 
+    var onTrackClickListener: OnTrackClickListener? = null
+
     fun bind(track: Track) {
 
         val application = AppPlaylistMaker()
@@ -26,6 +30,10 @@ class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
         trackName.text = track.trackName
         artistName.text = track.artistName
         trackTime.text = dateFormat.format(track.trackTime)
+
+        trackImage.setOnClickListener{
+            onTrackClickListener?.onTrackClick(track)
+        }
 
         Glide.with(itemView)
             .load(track.artworkUrl100)
@@ -35,4 +43,8 @@ class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
             .into(trackImage)
 
     }
+}
+
+fun interface OnTrackClickListener {
+    fun onTrackClick(track: Track)
 }
