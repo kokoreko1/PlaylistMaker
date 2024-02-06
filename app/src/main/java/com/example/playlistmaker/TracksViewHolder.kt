@@ -19,6 +19,9 @@ class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
 
     private val trackImage: ImageView = itemView.findViewById(R.id.track_icon)
 
+    // стрелка вперед (справа трэка)
+    private val ivForward: ImageView = itemView.findViewById(R.id.image_forward)
+
     val dateFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
 
     var onTrackClickListener: OnTrackClickListener? = null
@@ -31,7 +34,7 @@ class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
         artistName.text = track.artistName
         trackTime.text = dateFormat.format(track.trackTime)
 
-        trackImage.setOnClickListener{
+        ivForward.setOnClickListener{
             onTrackClickListener?.onTrackClick(track)
         }
 

@@ -65,6 +65,9 @@
             android:textSize="@dimen/text_size_edittext"
             android:imeOptions="actionDone"
             android:singleLine="true"/>
+        <!-- кнопка переноса строки будет заменена на кнопку Done -->
+        <!-- android:imeOptions="actionDone"-->
+        <!-- android:singleLine="true"-->
 
         <ImageView
             style="@style/Image_Style_search"
