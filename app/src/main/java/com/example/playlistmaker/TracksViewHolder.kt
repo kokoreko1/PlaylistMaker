@@ -19,12 +19,7 @@ class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
 
     private val trackImage: ImageView = itemView.findViewById(R.id.track_icon)
 
-    // стрелка вперед (справа трэка)
-    private val ivForward: ImageView = itemView.findViewById(R.id.image_forward)
-
     val dateFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
-
-    var onTrackClickListener: OnTrackClickListener? = null
 
     fun bind(track: Track) {
 
@@ -33,10 +28,6 @@ class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
         trackName.text = track.trackName
         artistName.text = track.artistName
         trackTime.text = dateFormat.format(track.trackTime)
-
-        ivForward.setOnClickListener{
-            onTrackClickListener?.onTrackClick(track)
-        }
 
         Glide.with(itemView)
             .load(track.artworkUrl100)
@@ -48,6 +39,4 @@ class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
     }
 }
 
-fun interface OnTrackClickListener {
-    fun onTrackClick(track: Track)
-}
+

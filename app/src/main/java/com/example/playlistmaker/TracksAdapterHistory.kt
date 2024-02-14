@@ -10,7 +10,7 @@ class TracksAdapterHistory(private val tracks: MutableList<Track>?) : RecyclerVi
         return TracksViewHolder(view)
     }
     override fun onBindViewHolder(holder: TracksViewHolder, position: Int) {
-        holder.bind(tracks?.get(position) ?: Track("","",0,""))
+        holder.bind(tracks?.get(position) ?: Track("","",0,"",0))
     }
     override fun getItemCount(): Int{
         return tracks?.size ?:0

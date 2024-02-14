@@ -14,6 +14,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,12 +39,14 @@ class SearchActivity : AppCompatActivity() {
     private val iTunesAPIService: ITunesAPI = retrofit.create(ITunesAPI::class.java)
 
     private val gson = Gson()
+
     private lateinit var sharedPrefs: SharedPreferences
 
     private val tracksAdapter = TracksAdapter(mutableListOf())
 
-    private var tracksHistory: MutableList<Track> = mutableListOf()
-    private val tracksAdapterHistory = TracksAdapterHistory(tracksHistory)
+//    private var tracksHistory: MutableList<Track> = mutableListOf()
+
+    private val tracksAdapterHistory = TracksAdapterHistory(mutableListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -64,10 +67,13 @@ class SearchActivity : AppCompatActivity() {
         val vgHistory = findViewById<ViewGroup>(R.id.view_group_history)
         val rvTracksHistory = findViewById<RecyclerView>(R.id.recycler_view_tracks_history)
 
-        // создание экземпляра Shared Preferences
+        // Создание экземпляра Shared Preferences
         sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, Context.MODE_PRIVATE)
 
-        // заполнение поля сохраненной переменной globalVarSavedSearchText
+        val tracksAdapterHistory = TracksAdapterHistory(getLocalTracks())
+        rvTracksHistory.adapter = tracksAdapterHistory
+
+        // Заполнение поля поиска сохраненной переменной globalVarSavedSearchText
         etSearch.setText((application as AppPlaylistMaker).globalVarSavedSearchText)
 
         rvTracks.layoutManager = LinearLayoutManager(this)
@@ -86,12 +92,20 @@ class SearchActivity : AppCompatActivity() {
             searchTracks(etSearch.text.toString())
         }
 
-        // Если фокус устанавливается на поле поиска и текст пустой,
-        // тогда отражается группа элементов Поиск
-        etSearch.setOnFocusChangeListener { view, hasFocus ->
-            vgHistory.visibility =
-                if (hasFocus && etSearch.text.isEmpty()) View.VISIBLE else View.GONE
+//        // Если фокус устанавливается на поле поиска и текст пустой,
+//        // тогда отражается группа элементов Поиск
+//        etSearch.setOnFocusChangeListener { view, hasFocus ->
+//            vgHistory.visibility =
+//                if (hasFocus && etSearch.text.isEmpty()) View.VISIBLE else View.GONE
+//        }
+
+        if (etSearch.hasFocus() && etSearch.text.isEmpty() == true) {
+            rvTracksHistory.adapter = TracksAdapterHistory(getLocalTracks())
+            vgHistory.isVisible = true
+        } else {
+            vgHistory.isVisible = false
         }
+
 
         // Нажатие на кнопку очистки поля поиска
         btClear.setOnClickListener {
@@ -115,28 +129,37 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-                // кнопка очистить видна только, если в поле поиска введены символы
+                // Кнопка очистить видна только, если в поле поиска введены символы
                 btClear.isVisible = !s.isNullOrEmpty()
 
-                // группа истории выбранных трэков видна только, если фокус установлен
-                // на поле поиска и поле поиска пустое
-                vgHistory.visibility =
-                    if (etSearch.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+//                // Группа истории выбранных трэков видна только тогда,
+//                // когда фокус установлен на поле поиска и поле поиска пустое
+//                vgHistory.visibility =
+//                    if (etSearch.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+
+                if (etSearch.hasFocus() && s?.isEmpty() == true) {
+
+                    rvTracksHistory.adapter = TracksAdapterHistory(getLocalTracks())
+                    vgHistory.isVisible = true
+
+                } else {
+                    vgHistory.isVisible = false
+                }
+
             }
 
-            // после введения символов сохраним их в переменной
+            // После введения символов сохраним их в переменной
             override fun afterTextChanged(s: Editable?) {
                 (application as AppPlaylistMaker).globalVarSavedSearchText = s.toString()
             }
 
         }
 
-        // слушатель изменения текста в поле поиска
+        // Слушатель изменения текста в поле поиска
         etSearch.addTextChangedListener(simpleTextWatcher)
 
 
-
-        // Нажатие на кнопку Done на клавиатуре появившейся при вводе в поле поиск
+        // Нажатие на кнопку Done на клавиатуре появившейся при вводе в поле поиск.
         etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // получить трэки с сервера
@@ -146,19 +169,6 @@ class SearchActivity : AppCompatActivity() {
             false
         }
 
-        // Обработка нажатия на картинку трэка в списке rvTracks
-        tracksAdapter.onTrackClickListener =
-            OnTrackClickListener { track ->
-                addTrackInHistoryList(track, tracksHistory)
-            }
-
-
-    }
-
-    // При закрытии активити сохраним Историю выбранных трэков
-    override fun onStop() {
-        super.onStop()
-        saveTracksListHistory(tracksHistory)
     }
 
     // при смене ориентации экрана сохраняем последнюю строку поиска
@@ -201,16 +211,27 @@ class SearchActivity : AppCompatActivity() {
                 response: Response<TracksResponse>
             ) {
                 if (response.isSuccessful) {
-                    if (response.body()?.results?.size ?: 0 == 0) {
-                        // если ничего на сервере не найдено,
-                        // показываем сообщение Ничего не найдено
+                    if ((response.body()?.results?.size ?: 0) == 0) {
+
+                        // Если ничего на сервере не найдено, показываем сообщение Ничего не найдено.
                         showMessage(TYPE_MESSAGE_NOTHING_WAS_FOUND)
+
                     } else {
-                        // если с сервера получены данные,
-                        // тогда список трэков делаем видимым,
-                        // а вспомогательные сообщения невидимыми
+
+                        // Если с сервера получены данные, тогда список трэков делаем видимым,
+                        // а вспомогательные сообщения невидимыми.
                         rvTracks.isVisible = true
                         val tracksAdapter = TracksAdapter(response.body()?.results)
+
+                        // Обработка нажатия на элемент списка найденных трэков.
+                        tracksAdapter.onTrackClickListenerAdapter =
+                            OnTrackClickListener{
+                                addTrackInHistoryList(it)
+                                //Log.d("DEBUG_PM", "onTrackClick $track")
+                                Toast.makeText(this@SearchActivity, "Click on ${it.trackName}", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+
                         rvTracks.adapter = tracksAdapter
 
                         ivNothingWasFound.isVisible = false
@@ -250,16 +271,45 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
+    private fun addTrackInHistoryList(newTrack: Track) {
 
-    //region ** funs history list
-    private fun addTrackInHistoryList(track: Track, tracksList: MutableList<Track>) {
-        tracksList.add(track)
+        val localTracks = getLocalTracks()
+
+        // Нет сохраненных трэков в SharedPref.
+        if (localTracks != null) {
+            if (localTracks.isEmpty()) {
+                localTracks.add(newTrack)
+            } else {
+
+                val foundTrack = localTracks.find{
+                    it == newTrack
+                }
+
+                if (foundTrack == null) {
+
+                    // Если в списке 10 трэков, тогда предварительно удаляем один трэк.
+                    if (localTracks.size == 10) {
+                        localTracks.removeAt(localTracks.size - 1)
+                    }
+
+                } else {
+                    // Если выбранный трэк уже есть в списке истории,
+                    // тогда удаляем его и добавляем первым в список.
+                    localTracks.remove(newTrack)
+                }
+
+                localTracks.add(0, newTrack)
+
+            }
+        }
+
+        if (localTracks != null) {
+            saveLocalTracks(localTracks)
+        }
+
     }
 
-    private fun saveTracksListHistory(tracksList: MutableList<Track>) {
+    fun saveLocalTracks(tracksList: MutableList<Track>) {
         val json: String = gson.toJson(tracksList)
         sharedPrefs
             .edit()
@@ -267,64 +317,18 @@ class SearchActivity : AppCompatActivity() {
             .apply()
     }
 
-    private fun getLocalTracksHistory(): MutableList<Track>? {
+    fun getLocalTracks(): MutableList<Track>? {
+
+        var tracksList: MutableList<Track> = mutableListOf()
 
         val json: String? = sharedPrefs.getString(TRACKS_HISTORY, null)
 
-        return if (json != null) {
-            val tracksList: MutableList<Track> =
-                gson.fromJson(json, object : TypeToken<MutableList<Track>>() {}.type)
-            tracksList
-        } else {
-            null
+        if (json != null) {
+            tracksList = gson.fromJson(json, object : TypeToken<MutableList<Track>>() {}.type)
         }
+
+        return tracksList
     }
-
-    private fun getTracksFromServer(): MutableList<Track> {
-
-        val tracksHistory: MutableList<Track> = mutableListOf()
-
-        tracksHistory.add(
-            Track(
-                "Smells Like Teen Spirit", "Nirvana", 282547,
-                "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"
-            )
-        )
-
-        tracksHistory.add(
-            Track(
-                "Billie Jean", "Michael Jackson", 382547,
-                "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/3d/9d/38/3d9d3811-71f0-3a0e-1ada-3004e56ff852/827969428726.jpg/100x100bb.jpg"
-            )
-        )
-
-        tracksHistory.add(
-            Track(
-                "Stayin' Alive", "Bee Gees", 482547,
-                "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/1f/80/1f/1f801fc1-8c0f-ea3e-d3e5-387c6619619e/16UMGIM86640.rgb.jpg/100x100bb.jpg"
-            )
-        )
-
-        tracksHistory.add(
-            Track(
-                "Whole Lotta Love", "Led Zeppelin", 582547,
-                "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"
-            )
-        )
-
-        tracksHistory.add(
-            Track(
-                "Sweet Child O'Mine", "Guns N' Roses", 682547,
-                "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"
-            )
-        )
-
-        return tracksHistory
-    }
-
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
 
     companion object {
 
@@ -337,5 +341,4 @@ class SearchActivity : AppCompatActivity() {
         const val TRACKS_HISTORY = "tracks_history"
 
     }
-
 }
