@@ -138,40 +138,48 @@
         app:cornerRadius="@dimen/radius_button_56"
         android:visibility="gone"/>
 
-    <LinearLayout
-        android:id="@+id/view_group_history"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:layout_height="wrap_content">
 
-        <TextView
-            style="@style/TextView_Style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/ys_display_medium"
-            android:text="@string/looking_for"
-            android:textSize="@dimen/primary_text_size" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_tracks_history"
+        <LinearLayout
+            android:id="@+id/view_group_history"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <Button
-            style="@style/Button_Style_search"
-            android:id="@+id/button_clear_the_history"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_20"
-            android:text="@string/clear_the_history"
-            android:textAllCaps="false"
-            app:cornerRadius="@dimen/radius_button_56" />
+            <TextView
+                style="@style/TextView_Style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/ys_display_medium"
+                android:text="@string/looking_for"
+                android:textSize="@dimen/primary_text_size" />
 
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_tracks_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <Button
+                style="@style/Button_Style_search"
+                android:id="@+id/button_clear_the_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_20"
+                android:text="@string/clear_the_history"
+                android:textAllCaps="false"
+                app:cornerRadius="@dimen/radius_button_56" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_tracks"

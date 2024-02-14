@@ -17,6 +17,8 @@ class SettingsActivity : AppCompatActivity() {
         // Переключатель Темная тема
         val swTheme = findViewById<SwitchMaterial>(R.id.themeSwitcher)
 
+        swTheme.isChecked = (application as AppPlaylistMaker).globalVarDarkTheme
+
         swTheme.setOnCheckedChangeListener { switcher, checked ->
             (applicationContext as AppPlaylistMaker).switchTheme(checked)
         }

@@ -67,7 +67,9 @@ class SearchActivity : AppCompatActivity() {
         val vgHistory = findViewById<ViewGroup>(R.id.view_group_history)
         val rvTracksHistory = findViewById<RecyclerView>(R.id.recycler_view_tracks_history)
 
-        // Создание экземпляра Shared Preferences
+        val btClearHistory = findViewById<Button>(R.id.button_clear_the_history)
+
+        // Создание экземпляра Shared Preferences.
         sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, Context.MODE_PRIVATE)
 
         val tracksAdapterHistory = TracksAdapterHistory(getLocalTracks())
@@ -81,29 +83,37 @@ class SearchActivity : AppCompatActivity() {
         rvTracksHistory.layoutManager = LinearLayoutManager(this)
         rvTracksHistory.adapter = tracksAdapterHistory
 
-        // нажатие на кнопку возврат
+        // Нажатие на кнопку возврат.
         ivBack.setOnClickListener {
             finish()
         }
 
-        // нажатие на кнопку "Обновить при проблемах с соединением"
+        // Нажатие на кнопку "Обновить при проблемах с соединением".
         btConnectionProblems.setOnClickListener {
-            // получение трэков с сервера
+            // Получение трэков с сервера.
             searchTracks(etSearch.text.toString())
         }
 
-//        // Если фокус устанавливается на поле поиска и текст пустой,
-//        // тогда отражается группа элементов Поиск
-//        etSearch.setOnFocusChangeListener { view, hasFocus ->
-//            vgHistory.visibility =
-//                if (hasFocus && etSearch.text.isEmpty()) View.VISIBLE else View.GONE
-//        }
-
-        if (etSearch.hasFocus() && etSearch.text.isEmpty() == true) {
-            rvTracksHistory.adapter = TracksAdapterHistory(getLocalTracks())
-            vgHistory.isVisible = true
-        } else {
+        // Нажатие на кнопку Очистить историю.
+        btClearHistory.setOnClickListener {
+            saveLocalTracks(mutableListOf())
             vgHistory.isVisible = false
+        }
+
+
+        // Если фокус устанавливается на поле поиска и текст пустой,
+        // тогда отражается группа элементов История поиска.
+        etSearch.setOnFocusChangeListener { view, hasFocus ->
+
+            val localTracks = getLocalTracks()
+
+            if (etSearch.hasFocus() && etSearch.text.isEmpty() == true && localTracks.size > 0) {
+                rvTracksHistory.adapter = TracksAdapterHistory(localTracks)
+                vgHistory.isVisible = true
+            } else {
+                vgHistory.isVisible = false
+            }
+
         }
 
 
@@ -132,14 +142,14 @@ class SearchActivity : AppCompatActivity() {
                 // Кнопка очистить видна только, если в поле поиска введены символы
                 btClear.isVisible = !s.isNullOrEmpty()
 
-//                // Группа истории выбранных трэков видна только тогда,
-//                // когда фокус установлен на поле поиска и поле поиска пустое
-//                vgHistory.visibility =
-//                    if (etSearch.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                // Группа истории выбранных трэков видна только тогда,
+                // когда фокус установлен на поле поиска и поле поиска пустое
 
-                if (etSearch.hasFocus() && s?.isEmpty() == true) {
+                val localTracks = getLocalTracks()
 
-                    rvTracksHistory.adapter = TracksAdapterHistory(getLocalTracks())
+                if (etSearch.hasFocus() && s?.isEmpty() == true && localTracks.size > 0) {
+
+                    rvTracksHistory.adapter = TracksAdapterHistory(localTracks)
                     vgHistory.isVisible = true
 
                 } else {
@@ -171,7 +181,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    // при смене ориентации экрана сохраняем последнюю строку поиска
+    // При смене ориентации экрана сохраняем последнюю строку поиска
     override fun onSaveInstanceState(outState: Bundle) {
 
         super.onSaveInstanceState(outState)
@@ -181,7 +191,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    // при смене ориентации экрана восстанавливаем последнюю строку поиска
+    // При смене ориентации экрана восстанавливаем последнюю строку поиска
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
 
         super.onRestoreInstanceState(savedInstanceState)
@@ -190,7 +200,6 @@ class SearchActivity : AppCompatActivity() {
         etSearch.setText(savedInstanceState.getString(SEARCH_EDIT_TEXT,""))
 
     }
-
 
     // Функция получения трэков с сервера и отражения их в списке
     private fun searchTracks(wordToSearch: String) {
@@ -227,9 +236,6 @@ class SearchActivity : AppCompatActivity() {
                         tracksAdapter.onTrackClickListenerAdapter =
                             OnTrackClickListener{
                                 addTrackInHistoryList(it)
-                                //Log.d("DEBUG_PM", "onTrackClick $track")
-                                Toast.makeText(this@SearchActivity, "Click on ${it.trackName}", Toast.LENGTH_SHORT)
-                                    .show()
                             }
 
                         rvTracks.adapter = tracksAdapter
@@ -317,7 +323,7 @@ class SearchActivity : AppCompatActivity() {
             .apply()
     }
 
-    fun getLocalTracks(): MutableList<Track>? {
+    fun getLocalTracks(): MutableList<Track> {
 
         var tracksList: MutableList<Track> = mutableListOf()
 
