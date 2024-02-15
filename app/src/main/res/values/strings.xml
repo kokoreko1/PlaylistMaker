@@ -15,6 +15,6 @@
     <string name="search_update">Обновить</string>
     <string name="agreement_url">https://yandex.ru/legal/practicum_offer/</string>
     <string name="androidDeveloper_url">https://practicum.yandex.ru/android-developer/</string>
-    <string name="looking_for">Вы искали</string>
+    <string name="looking_for">История поиска</string>
     <string name="clear_the_history">Очистить историю</string>
 </resources>
