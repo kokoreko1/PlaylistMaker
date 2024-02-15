@@ -12,37 +12,52 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
 
-        ///////////////////////////////
+        // восстановим сохраненную настройку DARK_THEME
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
+        val darkTheme = sharedPrefs.getBoolean(DARK_THEME, false)
+        (application as AppPlaylistMaker).switchTheme(darkTheme)
+
         // кнопка Поиск
-        val buttonSearch = findViewById<Button>(R.id.button_search)
+        val btSearch = findViewById<Button>(R.id.button_search)
 
-        buttonSearch.setOnClickListener {
+        btSearch.setOnClickListener {
             val displayIntent = Intent(this, SearchActivity::class.java)
-
             startActivity(displayIntent)
         }
 
-        ///////////////////////////////
         // кнопка Медиатека
-        val buttonLibrary = findViewById<Button>(R.id.button_library)
+        val btLibrary = findViewById<Button>(R.id.button_library)
 
-        buttonLibrary.setOnClickListener {
+        btLibrary.setOnClickListener {
             val displayIntent = Intent(this, LibraryActivity::class.java)
-
             startActivity(displayIntent)
         }
 
-        ///////////////////////////////
         // кнопка Настройка
-        val buttonSettings = findViewById<Button>(R.id.button_settings)
+        val btSettings = findViewById<Button>(R.id.button_settings)
 
-        buttonSettings.setOnClickListener {
+        btSettings.setOnClickListener {
             val displayIntent = Intent(this, SettingsActivity::class.java)
             startActivity(displayIntent)
         }
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        // сохраним настройку DARK_THEME
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
+
+        sharedPrefs.edit()
+            .putBoolean(DARK_THEME, (application as AppPlaylistMaker).globalVarDarkTheme)
+            .apply()
+
+    }
+    companion object {
+        const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
+        const val DARK_THEME = "dark_theme"
     }
 }

@@ -29,25 +29,15 @@
 
     </FrameLayout>
 
-
-    <FrameLayout
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/themeSwitcher"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/panel_height">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dark_theme"
-            style="@style/TextView_Style_settings"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/resource_switch"
-            android:contentDescription="@string/dark_theme"
-            style="@style/Image_Style_settings"/>
-
-    </FrameLayout>
+        android:layout_height="@dimen/panel_height"
+        android:layout_gravity="start"
+        android:layout_marginStart="@dimen/margin_primary"
+        android:layout_marginEnd="@dimen/margin_primary_dvd_2"
+        android:text="@string/dark_theme"
+        style="@style/Switch_Style_settings"/>
 
     <FrameLayout
         android:layout_width="match_parent"

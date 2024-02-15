@@ -43,20 +43,24 @@
     </style>
 
     <style name="TextView_Style_settings">
-
-        <item name="android:textColor">@color/black</item>
-
         <item name="android:layout_gravity">start|center_vertical</item>
         <item name="android:layout_marginStart">@dimen/margin_primary</item>
+
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/panel_text_size</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
-
     </style>
 
     <style name="Image_Style_settings">
         <item name="android:layout_gravity">end|center_vertical</item>
         <item name="android:layout_marginEnd">@dimen/padding_primary</item>
         <item name="android:fillColor">@color/gray</item>
+    </style>
+
+    <style name="Switch_Style_settings">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/panel_text_size</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
 
     <!-- *****************************-->
