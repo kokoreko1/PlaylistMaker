@@ -82,4 +82,12 @@
         <item name="android:background">@color/black</item>
     </style>
 
+    <!-- *****************************-->
+    <!-- activity audio player  -->
+    <!-- *****************************-->
+
+    <style name="TextView_audio_player">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

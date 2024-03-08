@@ -6,6 +6,7 @@
     <dimen name="text_size_edittext">16sp</dimen>
     <dimen name="text_size_11">11sp</dimen>
     <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
 
     <dimen name="radius_button">16dp</dimen>
     <dimen name="radius_button_56">56dp</dimen>

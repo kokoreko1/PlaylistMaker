@@ -84,4 +84,17 @@
         <item name="android:background">@color/white</item>
     </style>
 
+    <!-- *****************************-->
+    <!-- activity audio player  -->
+    <!-- *****************************-->
+
+    <style name="TextView_audio_player">
+        <item name="android:textColor">@color/black2</item>
+    </style>
+
+    <style name="ImageButton_Style_player">
+        <item name="android:background">@drawable/round_button</item>
+    </style>
+
+
 </resources>
