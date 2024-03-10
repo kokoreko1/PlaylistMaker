@@ -6,10 +6,13 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="black2">#1A1B22</color>
-    <color name="black2_25">#401A1B22</color>
     <color name="white">#FFFFFFFF</color>
     <color name="playlist_background">#3772E7</color>
     <color name="gray">#AEAFB4</color>
     <color name="light_grey">#E6E8EB</color>
+
+    <color name="black2">#1A1B22</color>
+    <color name="black2_25">#401A1B22</color>
+    <color name="white_25">#40FFFFFF</color>
+
 </resources>

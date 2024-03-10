@@ -92,8 +92,8 @@
         <item name="android:textColor">@color/black2</item>
     </style>
 
-    <style name="ImageButton_Style_player">
-        <item name="android:background">@drawable/round_button</item>
+    <style name="TextView_audio_player_title">
+        <item name="android:textColor">@color/gray</item>
     </style>
 
 
