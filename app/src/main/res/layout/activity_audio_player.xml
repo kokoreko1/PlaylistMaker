@@ -39,7 +39,7 @@
         app:layout_constraintGuide_percent="0.9" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageView_album"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="26dp"
@@ -61,7 +61,7 @@
         android:textSize="@dimen/primary_text_size"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_album"
         tools:text="Here Comes The Sun (Remastered 2009) длинный текст" />
 
     <TextView
