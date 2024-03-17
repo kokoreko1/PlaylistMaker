@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LinearLayout_Style_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    style="@style/LinearLayout_Style_settings">
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -15,47 +15,51 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
             android:layout_marginStart="@dimen/margin_primary"
-            android:src="@drawable/arrow_back"
-            android:contentDescription="@string/settings"/>
+            android:contentDescription="@string/settings"
+            android:paddingStart="@dimen/margin_primary_dvd_2"
+            android:paddingTop="@dimen/margin_primary_dvd_2"
+            android:paddingEnd="@dimen/margin_primary_dvd_2"
+            android:paddingBottom="@dimen/margin_primary_dvd_2"
+            android:src="@drawable/arrow_back" />
 
         <TextView
+            style="@style/TextView_Style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/settings"
             android:layout_gravity="center|center_vertical"
-            android:textSize="@dimen/primary_text_size"
             android:fontFamily="@font/ys_display_medium"
-            style="@style/TextView_Style"/>
+            android:text="@string/settings"
+            android:textSize="@dimen/primary_text_size" />
 
     </FrameLayout>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/themeSwitcher"
+        style="@style/Switch_Style_settings"
         android:layout_width="match_parent"
         android:layout_height="@dimen/panel_height"
         android:layout_gravity="start"
         android:layout_marginStart="@dimen/margin_primary"
         android:layout_marginEnd="@dimen/margin_primary_dvd_2"
-        android:text="@string/dark_theme"
-        style="@style/Switch_Style_settings"/>
+        android:text="@string/dark_theme" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/panel_height">
 
         <TextView
+            style="@style/TextView_Style_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/share_the_app"
-            style="@style/TextView_Style_settings"/>
+            android:text="@string/share_the_app" />
 
         <ImageView
             android:id="@+id/image_share"
+            style="@style/Image_Style_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/share"
             android:contentDescription="@string/share_the_app"
-            style="@style/Image_Style_settings"/>
+            android:src="@drawable/share" />
 
     </FrameLayout>
 
@@ -64,18 +68,18 @@
         android:layout_height="@dimen/panel_height">
 
         <TextView
+            style="@style/TextView_Style_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/write_to_support"
-            style="@style/TextView_Style_settings"/>
+            android:text="@string/write_to_support" />
 
         <ImageView
             android:id="@+id/image_support"
+            style="@style/Image_Style_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/support"
             android:contentDescription="@string/write_to_support"
-            style="@style/Image_Style_settings"/>
+            android:src="@drawable/support" />
 
     </FrameLayout>
 
@@ -84,18 +88,18 @@
         android:layout_height="@dimen/panel_height">
 
         <TextView
+            style="@style/TextView_Style_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/user_agreement"
-            style="@style/TextView_Style_settings"/>
+            android:text="@string/user_agreement" />
 
         <ImageView
             android:id="@+id/image_agreement"
+            style="@style/Image_Style_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/arrow_forward"
             android:contentDescription="@string/user_agreement"
-            style="@style/Image_Style_settings"/>
+            android:src="@drawable/arrow_forward" />
 
     </FrameLayout>
 

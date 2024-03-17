@@ -86,6 +86,13 @@ class SearchActivity : AppCompatActivity() {
         sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, Context.MODE_PRIVATE)
 
         val tracksAdapterHistory = TracksAdapterHistory(getLocalTracks())
+
+        // Обработка нажатия на элемент списка найденных трэков.
+        tracksAdapterHistory.onTrackClickListenerAdapter =
+            OnTrackClickListener{
+                openAudioPlayer(it)
+            }
+
         rvTracksHistory.adapter = tracksAdapterHistory
 
         // Заполнение поля поиска сохраненной переменной globalVarSavedSearchText
@@ -121,8 +128,20 @@ class SearchActivity : AppCompatActivity() {
             val localTracks = getLocalTracks()
 
             if (etSearch.hasFocus() && etSearch.text.isEmpty() == true && localTracks.size > 0) {
-                rvTracksHistory.adapter = TracksAdapterHistory(localTracks)
+
+                val tracksAdapterHistory = TracksAdapterHistory(localTracks)
+
+                // Обработка нажатия на элемент списка найденных трэков.
+                tracksAdapterHistory.onTrackClickListenerAdapter =
+                    OnTrackClickListener{
+                        openAudioPlayer(it)
+                    }
+
+                rvTracksHistory.adapter = tracksAdapterHistory
+
+
                 vgHistory.isVisible = true
+
             } else {
                 vgHistory.isVisible = false
             }
@@ -157,12 +176,19 @@ class SearchActivity : AppCompatActivity() {
 
                 // Группа истории выбранных трэков видна только тогда,
                 // когда фокус установлен на поле поиска и поле поиска пустое
-
                 val localTracks = getLocalTracks()
 
                 if (etSearch.hasFocus() && s?.isEmpty() == true && localTracks.size > 0) {
 
-                    rvTracksHistory.adapter = TracksAdapterHistory(localTracks)
+                    val tracksAdapterHistory = TracksAdapterHistory(localTracks)
+
+                    // Обработка нажатия на элемент списка найденных трэков.
+                    tracksAdapterHistory.onTrackClickListenerAdapter =
+                        OnTrackClickListener{
+                            openAudioPlayer(it)
+                        }
+
+                    rvTracksHistory.adapter = tracksAdapterHistory
                     vgHistory.isVisible = true
 
                 } else {

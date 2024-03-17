@@ -20,6 +20,10 @@
             android:layout_gravity="start|center_vertical"
             android:layout_marginStart="@dimen/margin_primary"
             android:contentDescription="@string/settings"
+            android:paddingStart="@dimen/margin_primary_dvd_2"
+            android:paddingEnd="@dimen/margin_primary_dvd_2"
+            android:paddingTop="@dimen/margin_primary_dvd_2"
+            android:paddingBottom="@dimen/margin_primary_dvd_2"
             android:src="@drawable/arrow_back" />
 
     </LinearLayout>
@@ -42,7 +46,7 @@
         android:id="@+id/imageView_album"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="@dimen/margin_26"
         android:src="@drawable/album_pic"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
@@ -55,7 +59,7 @@
         style="@style/TextView_audio_player"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/margin_24"
         android:fontFamily="@font/ys_display_medium"
         android:singleLine="true"
         android:textSize="@dimen/primary_text_size"
@@ -80,20 +84,20 @@
 
     <ImageButton
         android:id="@+id/imageButton_add_to_playlist"
-        android:background="@drawable/round_button"
         android:layout_width="51dp"
         android:layout_height="51dp"
         android:layout_marginTop="54dp"
+        android:background="@drawable/round_button"
         android:src="@drawable/button_add_to_playlist"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@+id/textView_artist_name" />
 
     <ImageButton
         android:id="@+id/imageButton_add_to_favorites"
-        android:background="@drawable/round_button"
         android:layout_width="51dp"
         android:layout_height="51dp"
         android:layout_marginTop="54dp"
+        android:background="@drawable/round_button"
         android:src="@drawable/button_add_to_favorites"
         app:layout_constraintEnd_toEndOf="@id/guidelineRight"
         app:layout_constraintTop_toBottomOf="@+id/textView_artist_name" />
@@ -102,7 +106,7 @@
         android:id="@+id/imageButton_play"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/margin_30"
         android:background="@drawable/round_button_play"
         android:src="@drawable/button_play"
         app:layout_constraintEnd_toStartOf="@+id/imageButton_add_to_favorites"
@@ -122,204 +126,178 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@+id/imageButton_play"
-        tools:text="0:29" />
+        android:text="0:00" />
 
     <!--    Длительность-->
-    <LinearLayout
-        android:id="@+id/LinearLayout_tracktime"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="30dp"
-        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@+id/textView_play_time">
 
-        <TextView
-            android:id="@+id/textView_tracktime_title"
-            style="@style/TextView_audio_player_title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/ys_display_regular"
-            android:singleLine="true"
-            android:textAlignment="textStart"
-            android:textSize="@dimen/text_size_13"
-            tools:text="Длительность" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView_tracktime_value"
-            style="@style/TextView_audio_player"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            android:layout_weight="2"
-            android:fontFamily="@font/ys_display_regular"
-            android:singleLine="true"
-            android:textAlignment="textEnd"
-            android:textSize="@dimen/text_size_13"
-            tools:text="5:35" />
+            <LinearLayout
+                android:id="@+id/LinearLayout_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginBottom="@dimen/margin_9"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/textView_country_title"
+                    style="@style/TextView_audio_player_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textSize="@dimen/text_size_13"
+                    android:text="Страна" />
 
-    <!--    Альбом-->
-    <LinearLayout
-        android:id="@+id/LinearLayout_collectionName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/LinearLayout_tracktime">
+                <TextView
+                    android:id="@+id/textView_country_value"
+                    style="@style/TextView_audio_player"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:singleLine="true"
+                    android:textAlignment="textEnd"
+                    android:textSize="@dimen/text_size_13"
+                    tools:text="Великобритания" />
 
-        <TextView
-            android:id="@+id/textView_collectionName_title"
-            style="@style/TextView_audio_player_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/ys_display_regular"
-            android:singleLine="true"
-            android:textSize="@dimen/text_size_13"
-            tools:text="Альбом" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView_collectionName_value"
-            style="@style/TextView_audio_player"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            android:layout_weight="2"
-            android:fontFamily="@font/ys_display_regular"
-            android:singleLine="true"
-            android:textAlignment="textEnd"
-            android:textSize="@dimen/text_size_13"
-            tools:text="Yesterday (Remastered 2009)" />
+            <LinearLayout
+                android:id="@+id/LinearLayout_primaryGenreName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginBottom="@dimen/margin_9"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/textView_primaryGenreName_title"
+                    style="@style/TextView_audio_player_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textSize="@dimen/text_size_13"
+                    android:text="Жанр" />
 
-    <!--    Год-->
-    <LinearLayout
-        android:id="@+id/LinearLayout_releaseDate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/LinearLayout_collectionName">
+                <TextView
+                    android:id="@+id/textView_primaryGenreName_value"
+                    style="@style/TextView_audio_player"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textAlignment="textEnd"
+                    android:textSize="@dimen/text_size_13"
+                    android:text="Rock" />
 
-        <TextView
-            android:id="@+id/textView_releaseDate_title"
-            style="@style/TextView_audio_player_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/ys_display_regular"
-            android:singleLine="true"
-            android:textSize="@dimen/text_size_13"
-            tools:text="Год" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView_releaseDate_value"
-            style="@style/TextView_audio_player"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            android:layout_weight="2"
-            android:fontFamily="@font/ys_display_regular"
-            android:singleLine="true"
-            android:textAlignment="textEnd"
-            android:textSize="@dimen/text_size_13"
-            tools:text="1965" />
+            <LinearLayout
+                android:id="@+id/LinearLayout_releaseDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginBottom="@dimen/margin_9"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/textView_releaseDate_title"
+                    style="@style/TextView_audio_player_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textSize="@dimen/text_size_13"
+                    android:text="Год" />
 
-    <!--    Жанр-->
-    <LinearLayout
-        android:id="@+id/LinearLayout_primaryGenreName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/LinearLayout_releaseDate">
+                <TextView
+                    android:id="@+id/textView_releaseDate_value"
+                    style="@style/TextView_audio_player"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textAlignment="textEnd"
+                    android:textSize="@dimen/text_size_13"
+                    tools:text="1965" />
 
-        <TextView
-            android:id="@+id/textView_primaryGenreName_title"
-            style="@style/TextView_audio_player_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/ys_display_regular"
-            android:singleLine="true"
-            android:textSize="@dimen/text_size_13"
-            tools:text="Жанр" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView_primaryGenreName_value"
-            style="@style/TextView_audio_player"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            android:layout_weight="2"
-            android:fontFamily="@font/ys_display_regular"
-            android:singleLine="true"
-            android:textAlignment="textEnd"
-            android:textSize="@dimen/text_size_13"
-            tools:text="Rock" />
+            <LinearLayout
+                android:id="@+id/LinearLayout_collectionName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginBottom="@dimen/margin_9"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/textView_collectionName_title"
+                    style="@style/TextView_audio_player_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textSize="@dimen/text_size_13"
+                    android:text="Альбом" />
 
-    <!--    Страна -->
-    <LinearLayout
-        android:id="@+id/LinearLayout_country"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/LinearLayout_primaryGenreName">
+                <TextView
+                    android:id="@+id/textView_collectionName_value"
+                    style="@style/TextView_audio_player"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textAlignment="textEnd"
+                    android:textSize="@dimen/text_size_13"
+                    tools:text="Yesterday (Remastered 2009)" />
 
-        <TextView
-            android:id="@+id/textView_country_title"
-            style="@style/TextView_audio_player_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/ys_display_regular"
-            android:singleLine="true"
-            android:textSize="@dimen/text_size_13"
-            tools:text="Страна" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView_country_value"
-            style="@style/TextView_audio_player"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            android:layout_weight="2"
-            android:fontFamily="@font/ys_display_regular"
-            android:singleLine="true"
-            android:textAlignment="textEnd"
-            android:textSize="@dimen/text_size_13"
-            tools:text="Великобритания" />
+            <LinearLayout
+                android:id="@+id/LinearLayout_tracktime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginBottom="@dimen/margin_9"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/textView_tracktime_title"
+                    style="@style/TextView_audio_player_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textSize="@dimen/text_size_13"
+                    android:text="Длительность" />
 
+                <TextView
+                    android:id="@+id/textView_tracktime_value"
+                    style="@style/TextView_audio_player"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textAlignment="textEnd"
+                    android:textSize="@dimen/text_size_13"
+                    tools:text="5:35" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -90,4 +90,8 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="TextView_audio_player_title">
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
 </resources>
