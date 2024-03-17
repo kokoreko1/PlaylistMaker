@@ -12,7 +12,7 @@
     <dimen name="radius_button">16dp</dimen>
     <dimen name="radius_button_56">56dp</dimen>
 
-    <dimen name="panel_height">64dp</dimen>
+    <dimen name="panel_height">56dp</dimen>
 
     <dimen name="margin_primary">16dp</dimen>
     <dimen name="margin_primary_dvd_2">8dp</dimen>

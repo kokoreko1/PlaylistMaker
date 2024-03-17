@@ -23,8 +23,6 @@ class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
 
     fun bind(track: Track) {
 
-        val application = AppPlaylistMaker()
-
         trackName.text = track.trackName
         artistName.text = track.artistName
         trackTime.text = dateFormat.format(track.trackTime)
@@ -33,7 +31,7 @@ class TracksViewHolder(trackView: View): RecyclerView.ViewHolder(trackView) {
             .load(track.artworkUrl100)
             .placeholder(R.drawable.barsik)
             .centerCrop()
-            .transform(RoundedCorners(application.globalValRoundingRadius))
+            .transform(RoundedCorners(GLOBAL_ROUNDING_RADIUS))
             .into(trackImage)
 
     }

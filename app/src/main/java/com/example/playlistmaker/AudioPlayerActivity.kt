@@ -30,7 +30,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        val trackjson: String? = intent.getStringExtra(Constants.TRACKJSON)
+        val trackjson: String? = intent.getStringExtra(AppPlaylistMaker.TRACK_JSON)
 
         var track: Track? = null
 
@@ -53,13 +53,12 @@ class AudioPlayerActivity : AppCompatActivity() {
             val tvCollectionName = findViewById<TextView>(R.id.textView_collectionName_value)
             tvCollectionName.text = track.collectionName
 
-            val tvReleaseDate = findViewById<TextView>(R.id.textView_releaseDate_value)
-
+            val tvReleaseYear = findViewById<TextView>(R.id.textView_releaseYear_value)
 
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
             val date = LocalDate.parse(track.releaseDate, formatter)
 
-            tvReleaseDate.text = date.year.toString()
+            tvReleaseYear.text = date.year.toString()
 
             val tvPrimaryGenreName = findViewById<TextView>(R.id.textView_primaryGenreName_value)
             tvPrimaryGenreName.text = track.primaryGenreName
@@ -71,9 +70,9 @@ class AudioPlayerActivity : AppCompatActivity() {
 
             Glide.with(this)
                 .load(track.getCoverArtwork())
-                .placeholder(R.drawable.album_pic)
+                .placeholder(R.drawable.placeholder_album)
                 .centerCrop()
-                .transform(RoundedCorners(Constants.GLOBAL_VAL_ROUNDING_RADIUS))
+                .transform(RoundedCorners(GLOBAL_ROUNDING_RADIUS))
                 .into(ivAlbum)
 
         }

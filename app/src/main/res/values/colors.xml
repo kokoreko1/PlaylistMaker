@@ -6,13 +6,26 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="playlist_background">#3772E7</color>
-    <color name="gray">#AEAFB4</color>
-    <color name="light_grey">#E6E8EB</color>
 
-    <color name="black2">#1A1B22</color>
+    <color name="playlist_background">#3772E7</color>
+
+    <!--    25% opacity - 40 -->
     <color name="black2_25">#401A1B22</color>
     <color name="white_25">#40FFFFFF</color>
+
+    <!--    Цвета YP-->
+    <color name="yp_white">#FFFFFFFF</color>
+    <color name="yp_black">#1A1B22</color>
+
+    <color name="yp_text_gray">#AEAFB4</color>
+    <color name="yp_light_gray">#E6E8EB</color>
+
+    <color name="yp_red">#F56B6C</color>
+
+    <color name="yp_blue">#3772E7</color>
+
+    <!--    50% opacity - 80 -->
+    <color name="yp_Background">#801A1B22</color>
+    <color name="yp_blue_light">#9FBBF3</color>
 
 </resources>

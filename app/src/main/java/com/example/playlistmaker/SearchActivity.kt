@@ -30,17 +30,19 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.random.Random
 
+private const val  NUMBER_OF_TRACKS_IN_THE_HISTORY_LIST = 1
+
 class SearchActivity : AppCompatActivity() {
 
     companion object {
 
-        const val SEARCH_EDIT_TEXT = "search_edit_text"
+        private const val SEARCH_EDIT_TEXT = "search_edit_text"
 
-        const val TYPE_MESSAGE_NOTHING_WAS_FOUND = 1
-        const val TYPE_MESSAGE_CONNECTION_PROBLEMS = 2
+        private const val TYPE_MESSAGE_NOTHING_WAS_FOUND = 1
+        private const val TYPE_MESSAGE_CONNECTION_PROBLEMS = 2
 
-        const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
-        const val TRACKS_HISTORY = "tracks_history"
+        private const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
+        private const val TRACKS_HISTORY = "tracks_history"
 
     }
 
@@ -59,7 +61,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val tracksAdapter = TracksAdapter(mutableListOf())
 
-//    private val tracksAdapterHistory = TracksAdapterHistory(mutableListOf())
+    private lateinit var tracksAdapterHistory: TracksAdapterHistory
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -85,7 +87,7 @@ class SearchActivity : AppCompatActivity() {
         // Создание экземпляра Shared Preferences.
         sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, Context.MODE_PRIVATE)
 
-        val tracksAdapterHistory = TracksAdapterHistory(getLocalTracks())
+        tracksAdapterHistory = TracksAdapterHistory(getLocalTracks())
 
         // Обработка нажатия на элемент списка найденных трэков.
         tracksAdapterHistory.onTrackClickListenerAdapter =
@@ -128,8 +130,6 @@ class SearchActivity : AppCompatActivity() {
             val localTracks = getLocalTracks()
 
             if (etSearch.hasFocus() && etSearch.text.isEmpty() == true && localTracks.size > 0) {
-
-                val tracksAdapterHistory = TracksAdapterHistory(localTracks)
 
                 // Обработка нажатия на элемент списка найденных трэков.
                 tracksAdapterHistory.onTrackClickListenerAdapter =
@@ -332,7 +332,7 @@ class SearchActivity : AppCompatActivity() {
             if (foundTrack == null) {
 
                 // Если в списке 10 трэков, тогда предварительно удаляем один трэк.
-                if (localTracks.size == 10) {
+                if (localTracks.size == NUMBER_OF_TRACKS_IN_THE_HISTORY_LIST) {
                     localTracks.removeAt(localTracks.size - 1)
                 }
 
@@ -377,7 +377,7 @@ class SearchActivity : AppCompatActivity() {
 
         val trackjson: String = gson.toJson(track)
 
-        displayIntent.putExtra(Constants.TRACKJSON, trackjson)
+        displayIntent.putExtra(AppPlaylistMaker.TRACK_JSON, trackjson)
 
         startActivity(displayIntent)
 

@@ -5,12 +5,16 @@
     <!-- общие -->
     <!-- *****************************-->
 
+    <style name="Playlist_Background">
+        <item name="android:background">@color/yp_black</item>
+    </style>
+
     <style name="TextView_Style">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/yp_white</item>
     </style>
 
     <style name="TextView_Style_gray">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/yp_white</item>
     </style>
 
     <!-- *****************************-->
@@ -18,16 +22,22 @@
     <!-- *****************************-->
 
     <style name="Button_Style_main" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:backgroundTint">@color/black</item>
-        <item name="iconTint">@color/white</item>
+
+        <item name="android:textColor">@color/yp_black</item>
+        <item name="android:backgroundTint">@color/yp_white</item>
+        <item name="iconTint">@color/yp_black</item>
+
+        <item name="android:layout_marginTop">@dimen/margin_8</item>
+        <item name="android:layout_marginBottom">@dimen/margin_8</item>
 
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/primary_text_size</item>
         <item name="iconGravity">textStart</item>
+
         <item name="iconPadding">@dimen/padding_primary</item>
         <item name="cornerRadius">@dimen/radius_button</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
+
     </style>
 
     <!-- *****************************-->
@@ -35,14 +45,14 @@
     <!-- *****************************-->
 
     <style name="LinearLayout_Style_settings">
-        <item name="android:background">@color/black</item>
+        <item name="android:background">@color/yp_black</item>
     </style>
 
     <style name="TextView_Style_settings" parent="Widget.MaterialComponents.TextView">
         <item name="android:layout_gravity">start|center_vertical</item>
         <item name="android:layout_marginStart">@dimen/margin_primary</item>
 
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/yp_white</item>
         <item name="android:textSize">@dimen/panel_text_size</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
@@ -50,11 +60,11 @@
     <style name="Image_Style_settings">
         <item name="android:layout_gravity">end|center_vertical</item>
         <item name="android:layout_marginEnd">@dimen/padding_primary</item>
-        <item name="android:fillColor">@color/white</item>
+        <item name="android:fillColor">@color/yp_white</item>
     </style>
 
     <style name="Switch_Style_settings">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/yp_white</item>
         <item name="android:textSize">@dimen/panel_text_size</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
@@ -64,17 +74,17 @@
     <!-- *****************************-->
 
     <style name="EditText_Style_search">
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/yp_white</item>
         <item name="android:textColorHint">@color/black</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Image_Style_search">
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/yp_white</item>
     </style>
 
     <style name="Button_Style_search">
-        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:backgroundTint">@color/yp_white</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
@@ -86,12 +96,16 @@
     <!-- activity audio player  -->
     <!-- *****************************-->
 
+    <style name="LinearLayout_audio_player">
+        <item name="android:background">@color/yp_black</item>
+    </style>
+
     <style name="TextView_audio_player">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/yp_white</item>
     </style>
 
     <style name="TextView_audio_player_title">
-        <item name="android:textColor">@color/gray</item>
+        <item name="android:textColor">@color/yp_text_gray</item>
     </style>
 
 </resources>
