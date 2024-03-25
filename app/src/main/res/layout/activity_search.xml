@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/LinearLayout_Style_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    style="@style/LinearLayout_Style_settings">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,12 +12,17 @@
 
         <ImageView
             android:id="@+id/image_back"
+            style="@style/TextView_Style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
             android:layout_marginStart="@dimen/margin_primary"
-            android:src="@drawable/arrow_back"
-            android:contentDescription="@string/settings"/>
+            android:contentDescription="@string/settings"
+            android:paddingStart="@dimen/margin_primary_dvd_2"
+            android:paddingTop="@dimen/margin_primary_dvd_2"
+            android:paddingEnd="@dimen/margin_primary_dvd_2"
+            android:paddingBottom="@dimen/margin_primary_dvd_2"
+            android:src="@drawable/arrow_back" />
 
         <TextView
             style="@style/TextView_Style"
@@ -34,44 +39,44 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="52dp"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/padding_primary"
-        android:paddingRight="@dimen/padding_primary"
-        android:orientation="horizontal">
+        android:paddingRight="@dimen/padding_primary">
 
         <ImageView
-            style="@style/Image_Style_search"
             android:id="@+id/searchIcon"
+            style="@style/Image_Style_search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:paddingLeft="13dp"
             android:paddingRight="9dp"
-            android:src="@drawable/search_edit_text"/>
+            android:src="@drawable/search_edit_text" />
 
         <EditText
-            style="@style/EditText_Style_search"
             android:id="@+id/searchEditText"
+            style="@style/EditText_Style_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_weight="10"
             android:layout_marginTop="@dimen/margin_primary_dvd_2"
             android:layout_marginBottom="@dimen/margin_primary_dvd_2"
+            android:layout_weight="10"
             android:fontFamily="@font/ys_display_regular"
             android:hint="@string/search"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:lines="1"
-            android:textSize="@dimen/text_size_edittext"
-            android:imeOptions="actionDone"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_edittext" />
         <!-- кнопка переноса строки будет заменена на кнопку Done -->
         <!-- android:imeOptions="actionDone"-->
         <!-- android:singleLine="true"-->
 
         <ImageView
-            style="@style/Image_Style_search"
             android:id="@+id/clearIcon"
+            style="@style/Image_Style_search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_primary_dvd_2"
@@ -79,42 +84,42 @@
             android:paddingLeft="@dimen/padding_primary"
             android:paddingRight="@dimen/padding_primary"
             android:src="@drawable/clear_edit_text"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </LinearLayout>
 
     <ImageView
         android:id="@+id/image_nothing_was_found"
-        android:layout_marginTop="102dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="102dp"
         android:src="@drawable/nothing_was_found"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
-        style="@style/TextView_Style"
         android:id="@+id/text_nothing_was_found"
+        style="@style/TextView_Style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/nothing_was_found"
         android:textSize="@dimen/text_size_20"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/image_connection_problems"
-        android:layout_marginTop="102dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="102dp"
         android:src="@drawable/connection_problems"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
-        style="@style/TextView_Style"
         android:id="@+id/text_connection_problems"
+        style="@style/TextView_Style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -124,19 +129,19 @@
         android:text="@string/connection_problems"
         android:textAlignment="center"
         android:textSize="@dimen/text_size_20"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <Button
-        style="@style/Button_Style_search"
         android:id="@+id/button_update"
+        style="@style/Button_Style_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_20"
         android:text="@string/search_update"
         android:textAllCaps="false"
-        app:cornerRadius="@dimen/radius_button_56"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:cornerRadius="@dimen/radius_button_56" />
 
 
     <ScrollView
@@ -162,12 +167,11 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_tracks_history"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
 
             <Button
-                style="@style/Button_Style_search"
                 android:id="@+id/button_clear_the_history"
+                style="@style/Button_Style_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -184,7 +188,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_tracks"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

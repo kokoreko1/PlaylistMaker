@@ -5,12 +5,11 @@ import androidx.appcompat.app.AppCompatDelegate
 import android.content.SharedPreferences
 import android.content.Context
 
-class AppPlaylistMaker: Application() {
+const val  GLOBAL_ROUNDING_RADIUS = 1
+
+class AppPlaylistMaker : Application() {
 
     var globalVarSavedSearchText = ""
-
-    val globalValRoundingRadius = 10
-
     var globalVarDarkTheme: Boolean = false
 
     private lateinit var sharedPrefs: SharedPreferences
@@ -48,6 +47,7 @@ class AppPlaylistMaker: Application() {
     companion object {
         const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
         const val DARK_THEME = "dark_theme"
+        const val TRACK_JSON = "trackjson"
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -29,13 +30,29 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.random.Random
 
+private const val  NUMBER_OF_TRACKS_IN_THE_HISTORY_LIST = 1
+
 class SearchActivity : AppCompatActivity() {
 
+    companion object {
+
+        private const val SEARCH_EDIT_TEXT = "search_edit_text"
+
+        private const val TYPE_MESSAGE_NOTHING_WAS_FOUND = 1
+        private const val TYPE_MESSAGE_CONNECTION_PROBLEMS = 2
+
+        private const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
+        private const val TRACKS_HISTORY = "tracks_history"
+
+    }
+
     private val iTunesBaseUrl = "https://itunes.apple.com"
+
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+
     private val iTunesAPIService: ITunesAPI = retrofit.create(ITunesAPI::class.java)
 
     private val gson = Gson()
@@ -44,9 +61,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val tracksAdapter = TracksAdapter(mutableListOf())
 
-//    private var tracksHistory: MutableList<Track> = mutableListOf()
-
-    private val tracksAdapterHistory = TracksAdapterHistory(mutableListOf())
+    private lateinit var tracksAdapterHistory: TracksAdapterHistory
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -72,7 +87,14 @@ class SearchActivity : AppCompatActivity() {
         // Создание экземпляра Shared Preferences.
         sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, Context.MODE_PRIVATE)
 
-        val tracksAdapterHistory = TracksAdapterHistory(getLocalTracks())
+        tracksAdapterHistory = TracksAdapterHistory(getLocalTracks())
+
+        // Обработка нажатия на элемент списка найденных трэков.
+        tracksAdapterHistory.onTrackClickListenerAdapter =
+            OnTrackClickListener{
+                openAudioPlayer(it)
+            }
+
         rvTracksHistory.adapter = tracksAdapterHistory
 
         // Заполнение поля поиска сохраненной переменной globalVarSavedSearchText
@@ -103,13 +125,23 @@ class SearchActivity : AppCompatActivity() {
 
         // Если фокус устанавливается на поле поиска и текст пустой,
         // тогда отражается группа элементов История поиска.
-        etSearch.setOnFocusChangeListener { view, hasFocus ->
+        etSearch.setOnFocusChangeListener { _, _ ->
 
             val localTracks = getLocalTracks()
 
             if (etSearch.hasFocus() && etSearch.text.isEmpty() == true && localTracks.size > 0) {
-                rvTracksHistory.adapter = TracksAdapterHistory(localTracks)
+
+                // Обработка нажатия на элемент списка найденных трэков.
+                tracksAdapterHistory.onTrackClickListenerAdapter =
+                    OnTrackClickListener{
+                        openAudioPlayer(it)
+                    }
+
+                rvTracksHistory.adapter = tracksAdapterHistory
+
+
                 vgHistory.isVisible = true
+
             } else {
                 vgHistory.isVisible = false
             }
@@ -144,12 +176,19 @@ class SearchActivity : AppCompatActivity() {
 
                 // Группа истории выбранных трэков видна только тогда,
                 // когда фокус установлен на поле поиска и поле поиска пустое
-
                 val localTracks = getLocalTracks()
 
                 if (etSearch.hasFocus() && s?.isEmpty() == true && localTracks.size > 0) {
 
-                    rvTracksHistory.adapter = TracksAdapterHistory(localTracks)
+                    val tracksAdapterHistory = TracksAdapterHistory(localTracks)
+
+                    // Обработка нажатия на элемент списка найденных трэков.
+                    tracksAdapterHistory.onTrackClickListenerAdapter =
+                        OnTrackClickListener{
+                            openAudioPlayer(it)
+                        }
+
+                    rvTracksHistory.adapter = tracksAdapterHistory
                     vgHistory.isVisible = true
 
                 } else {
@@ -174,7 +213,6 @@ class SearchActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // получить трэки с сервера
                 searchTracks(etSearch.text.toString())
-                true
             }
             false
         }
@@ -236,6 +274,7 @@ class SearchActivity : AppCompatActivity() {
                         tracksAdapter.onTrackClickListenerAdapter =
                             OnTrackClickListener{
                                 addTrackInHistoryList(it)
+                                openAudioPlayer(it)
                             }
 
                         rvTracks.adapter = tracksAdapter
@@ -282,36 +321,32 @@ class SearchActivity : AppCompatActivity() {
         val localTracks = getLocalTracks()
 
         // Нет сохраненных трэков в SharedPref.
-        if (localTracks != null) {
-            if (localTracks.isEmpty()) {
-                localTracks.add(newTrack)
-            } else {
+        if (localTracks.isEmpty()) {
+            localTracks.add(newTrack)
+        } else {
 
-                val foundTrack = localTracks.find{
-                    it == newTrack
-                }
-
-                if (foundTrack == null) {
-
-                    // Если в списке 10 трэков, тогда предварительно удаляем один трэк.
-                    if (localTracks.size == 10) {
-                        localTracks.removeAt(localTracks.size - 1)
-                    }
-
-                } else {
-                    // Если выбранный трэк уже есть в списке истории,
-                    // тогда удаляем его и добавляем первым в список.
-                    localTracks.remove(newTrack)
-                }
-
-                localTracks.add(0, newTrack)
-
+            val foundTrack = localTracks.find{
+                it == newTrack
             }
+
+            if (foundTrack == null) {
+
+                // Если в списке 10 трэков, тогда предварительно удаляем один трэк.
+                if (localTracks.size == NUMBER_OF_TRACKS_IN_THE_HISTORY_LIST) {
+                    localTracks.removeAt(localTracks.size - 1)
+                }
+
+            } else {
+                // Если выбранный трэк уже есть в списке истории,
+                // тогда удаляем его и добавляем первым в список.
+                localTracks.remove(newTrack)
+            }
+
+            localTracks.add(0, newTrack)
+
         }
 
-        if (localTracks != null) {
-            saveLocalTracks(localTracks)
-        }
+        saveLocalTracks(localTracks)
 
     }
 
@@ -336,15 +371,15 @@ class SearchActivity : AppCompatActivity() {
         return tracksList
     }
 
-    companion object {
+    private fun openAudioPlayer(track: Track) {
 
-        const val SEARCH_EDIT_TEXT = "search_edit_text"
+        val displayIntent = Intent(this, AudioPlayerActivity::class.java)
 
-        const val TYPE_MESSAGE_NOTHING_WAS_FOUND = 1
-        const val TYPE_MESSAGE_CONNECTION_PROBLEMS = 2
+        val trackjson: String = gson.toJson(track)
 
-        const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
-        const val TRACKS_HISTORY = "tracks_history"
+        displayIntent.putExtra(AppPlaylistMaker.TRACK_JSON, trackjson)
+
+        startActivity(displayIntent)
 
     }
 }
