@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.util.Log
 import android.view.View
@@ -14,6 +16,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -21,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,7 +34,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.random.Random
 
-private const val  NUMBER_OF_TRACKS_IN_THE_HISTORY_LIST = 1
+private const val  NUMBER_OF_TRACKS_IN_THE_HISTORY_LIST = 10
 
 class SearchActivity : AppCompatActivity() {
 
@@ -43,6 +47,13 @@ class SearchActivity : AppCompatActivity() {
 
         private const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
         private const val TRACKS_HISTORY = "tracks_history"
+
+        // отложенный поиск через 2 сек
+        private const val SEARCH_DEBUNCE_DELAY = 2000L
+
+        // нажатие на элемент списка не чаще одного раза в секунду
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private var isClickAllowed = true
 
     }
 
@@ -63,6 +74,9 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var tracksAdapterHistory: TracksAdapterHistory
 
+    // Отложенный поиск
+    private val handler = Handler(Looper.getMainLooper())
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -70,7 +84,9 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         val ivBack = findViewById<ImageView>(R.id.image_back)
+
         val etSearch = findViewById<EditText>(R.id.searchEditText)
+
         val btClear = findViewById<ImageView>(R.id.clearIcon)
 
         val rvTracks = findViewById<RecyclerView>(R.id.recycler_view_tracks)
@@ -192,7 +208,11 @@ class SearchActivity : AppCompatActivity() {
                     vgHistory.isVisible = true
 
                 } else {
+
                     vgHistory.isVisible = false
+
+                    searchDebounce(s.toString())
+
                 }
 
             }
@@ -249,6 +269,9 @@ class SearchActivity : AppCompatActivity() {
         val tvConnectionProblems = findViewById<TextView>(R.id.text_connection_problems)
         val btConnectionProblems = findViewById<Button>(R.id.button_update)
 
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar.isVisible = true
+
         val rvTracks = findViewById<RecyclerView>(R.id.recycler_view_tracks)
 
         iTunesAPIService.search(wordToSearch).enqueue(object : Callback<TracksResponse> {
@@ -285,6 +308,8 @@ class SearchActivity : AppCompatActivity() {
                         tvConnectionProblems.isVisible = false
                         btConnectionProblems.isVisible = false
 
+                        progressBar.isVisible = false
+
                     }
                 } else {
                     // при ошибках отражаем сообщение Проблемы с соединением
@@ -304,15 +329,30 @@ class SearchActivity : AppCompatActivity() {
                         ivConnectionProblems.isVisible = true
                         tvConnectionProblems.isVisible = true
                         btConnectionProblems.isVisible = true
+
+                        progressBar.isVisible = false
                     }
                     TYPE_MESSAGE_NOTHING_WAS_FOUND -> {
                         rvTracks.isVisible = false
                         ivNothingWasFound.isVisible = true
                         tvNothingWasFound.isVisible = true
+
+                        progressBar.isVisible = false
                     }
                 }
             }
         })
+
+    }
+
+    // Функция поиска через 2 секунды после остановки ввода пользователем.
+    private fun searchDebounce(searchText: String){
+
+        val searchRunnable = Runnable { searchTracks(searchText) }
+
+        handler.removeCallbacks(searchRunnable)
+
+        handler.postDelayed(searchRunnable, SEARCH_DEBUNCE_DELAY)
 
     }
 
@@ -373,13 +413,28 @@ class SearchActivity : AppCompatActivity() {
 
     private fun openAudioPlayer(track: Track) {
 
-        val displayIntent = Intent(this, AudioPlayerActivity::class.java)
+        if (clickDebounce()){
 
-        val trackjson: String = gson.toJson(track)
+            val displayIntent = Intent(this, AudioPlayerActivity::class.java)
 
-        displayIntent.putExtra(AppPlaylistMaker.TRACK_JSON, trackjson)
+            val trackjson: String = gson.toJson(track)
 
-        startActivity(displayIntent)
+            displayIntent.putExtra(AppPlaylistMaker.TRACK_JSON, trackjson)
 
+            startActivity(displayIntent)
+
+        }
+    }
+
+    private fun clickDebounce() : Boolean {
+
+        val current = isClickAllowed
+
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+
+        return current
     }
 }

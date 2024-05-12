@@ -1,8 +1,13 @@
 package com.example.playlistmaker
 
+import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -15,13 +20,30 @@ import java.util.Locale
 
 class AudioPlayerActivity : AppCompatActivity() {
 
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+    }
+
     private val gson = Gson()
 
+    private var mediaPlayer = MediaPlayer()
+    private var playerState = STATE_DEFAULT
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_audio_player)
+
+        val buttonPlay = findViewById<ImageButton>(R.id.imageButton_play)
+
+        buttonPlay.setOnClickListener {
+            playbackControl()
+        }
 
         val ivBack = findViewById<ImageView>(R.id.image_back)
 
@@ -75,7 +97,73 @@ class AudioPlayerActivity : AppCompatActivity() {
                 .transform(RoundedCorners(GLOBAL_ROUNDING_RADIUS))
                 .into(ivAlbum)
 
+            preparePlayer(track.previewUrl)
+
         }
 
     }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+    }
+    private fun preparePlayer(url: String) {
+
+        val buttonPlay = findViewById<ImageButton>(R.id.imageButton_play)
+
+        //var url = "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/ac/c7/d1/acc7d13f-6634-495f-caf6-491eccb505e8/mzaf_4002676889906514534.plus.aac.p.m4a"
+
+        mediaPlayer.setDataSource(url)
+
+        mediaPlayer.prepareAsync()
+
+        mediaPlayer.setOnPreparedListener {
+            //buttonPlay.isEnabled = true
+            playerState = STATE_PREPARED
+        }
+
+        mediaPlayer.setOnCompletionListener {
+            //buttonPlay.text = "PLAY"
+            playerState = STATE_PREPARED
+        }
+    }
+
+    private fun startPlayer() {
+
+        val buttonPlay = findViewById<ImageButton>(R.id.imageButton_play)
+
+        mediaPlayer.start()
+
+        buttonPlay.setImageResource(R.drawable.button_pause)
+
+        playerState = STATE_PLAYING
+    }
+
+    private fun pausePlayer() {
+
+        val buttonPlay = findViewById<ImageButton>(R.id.imageButton_play)
+
+        mediaPlayer.pause()
+
+        buttonPlay.setImageResource(R.drawable.button_play)
+
+        playerState = STATE_PAUSED
+    }
+
+    private fun playbackControl() {
+        when(playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+
 }
