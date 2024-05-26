@@ -3,6 +3,8 @@ package com.example.playlistmaker
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -25,6 +27,10 @@ class AudioPlayerActivity : AppCompatActivity() {
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
+
+        // Число миллисекунд в одной секунде
+        private const val DELAY = 1000L
+
     }
 
     private val gson = Gson()
@@ -32,14 +38,22 @@ class AudioPlayerActivity : AppCompatActivity() {
     private var mediaPlayer = MediaPlayer()
     private var playerState = STATE_DEFAULT
 
+    private var mainThreadHandler: Handler? = null
+    private var tvPlayTime: TextView? = null
+    private var elapsedTime: Long = 0
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_audio_player)
 
         val buttonPlay = findViewById<ImageButton>(R.id.imageButton_play)
+
+        // Создаём Handler, привязанный к главному потоку
+        mainThreadHandler = Handler(Looper.getMainLooper())
+
 
         buttonPlay.setOnClickListener {
             playbackControl()
@@ -112,23 +126,18 @@ class AudioPlayerActivity : AppCompatActivity() {
         super.onDestroy()
         mediaPlayer.release()
     }
+
     private fun preparePlayer(url: String) {
-
-        val buttonPlay = findViewById<ImageButton>(R.id.imageButton_play)
-
-        //var url = "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/ac/c7/d1/acc7d13f-6634-495f-caf6-491eccb505e8/mzaf_4002676889906514534.plus.aac.p.m4a"
 
         mediaPlayer.setDataSource(url)
 
         mediaPlayer.prepareAsync()
 
         mediaPlayer.setOnPreparedListener {
-            //buttonPlay.isEnabled = true
             playerState = STATE_PREPARED
         }
 
         mediaPlayer.setOnCompletionListener {
-            //buttonPlay.text = "PLAY"
             playerState = STATE_PREPARED
         }
     }
@@ -142,6 +151,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         buttonPlay.setImageResource(R.drawable.button_pause)
 
         playerState = STATE_PLAYING
+
     }
 
     private fun pausePlayer() {
@@ -153,17 +163,63 @@ class AudioPlayerActivity : AppCompatActivity() {
         buttonPlay.setImageResource(R.drawable.button_play)
 
         playerState = STATE_PAUSED
+
     }
 
     private fun playbackControl() {
+
         when(playerState) {
+
             STATE_PLAYING -> {
                 pausePlayer()
             }
+
             STATE_PREPARED, STATE_PAUSED -> {
                 startPlayer()
+                startTimer()
             }
         }
     }
+
+    private fun startTimer() {
+
+        val startTime = System.currentTimeMillis()
+
+        mainThreadHandler?.post(
+            createUpdateTimerTask(startTime)
+        )
+    }
+
+    private fun createUpdateTimerTask(startTime: Long): Runnable {
+
+        return object : Runnable {
+
+            override fun run() {
+
+                val tvPlayTime = findViewById<TextView>(R.id.textView_play_time)
+
+                when(playerState) {
+
+                    STATE_PLAYING -> {
+
+                        elapsedTime = elapsedTime + (System.currentTimeMillis() - startTime)
+
+                        val seconds = elapsedTime / DELAY
+
+                        tvPlayTime?.text = String.format("%d:%02d", seconds / 60, seconds % 60)
+
+                        mainThreadHandler?.postDelayed(this, DELAY)
+
+                    }
+
+//                    STATE_PAUSED -> {
+//
+//                    }
+                }
+
+           }
+        }
+    }
+
 
 }
