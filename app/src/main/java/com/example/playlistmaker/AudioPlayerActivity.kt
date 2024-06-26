@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -39,11 +38,9 @@ class AudioPlayerActivity : AppCompatActivity() {
     private var playerState = STATE_DEFAULT
 
     private var mainThreadHandler: Handler? = null
-    private var tvPlayTime: TextView? = null
-    private var elapsedTime: Long = 0
+    private var secondsPlay: Long = 0
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -168,7 +165,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun playbackControl() {
 
-        when(playerState) {
+        when (playerState) {
 
             STATE_PLAYING -> {
                 pausePlayer()
@@ -198,13 +195,13 @@ class AudioPlayerActivity : AppCompatActivity() {
 
                 val tvPlayTime = findViewById<TextView>(R.id.textView_play_time)
 
-                when(playerState) {
+                val elapsedTime = System.currentTimeMillis() - startTime
+
+                val seconds = secondsPlay + elapsedTime / DELAY
+
+                when (playerState) {
 
                     STATE_PLAYING -> {
-
-                        elapsedTime = elapsedTime + (System.currentTimeMillis() - startTime)
-
-                        val seconds = elapsedTime / DELAY
 
                         tvPlayTime?.text = String.format("%d:%02d", seconds / 60, seconds % 60)
 
@@ -212,12 +209,14 @@ class AudioPlayerActivity : AppCompatActivity() {
 
                     }
 
-//                    STATE_PAUSED -> {
-//
-//                    }
+                    STATE_PAUSED -> {
+
+                        secondsPlay = seconds
+
+                    }
                 }
 
-           }
+            }
         }
     }
 
