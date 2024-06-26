@@ -193,6 +193,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
             override fun run() {
 
+                val buttonPlay = findViewById<ImageButton>(R.id.imageButton_play)
                 val tvPlayTime = findViewById<TextView>(R.id.textView_play_time)
 
                 val elapsedTime = System.currentTimeMillis() - startTime
@@ -212,6 +213,15 @@ class AudioPlayerActivity : AppCompatActivity() {
                     STATE_PAUSED -> {
 
                         secondsPlay = seconds
+
+                    }
+
+                    // окончание фрагмента
+                    STATE_PREPARED -> {
+
+                        secondsPlay = 0
+
+                        buttonPlay.setImageResource(R.drawable.button_play)
 
                     }
                 }
