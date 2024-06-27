@@ -34,7 +34,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.random.Random
 
-private const val  NUMBER_OF_TRACKS_IN_THE_HISTORY_LIST = 10
+private const val NUMBER_OF_TRACKS_IN_THE_HISTORY_LIST = 10
 
 class SearchActivity : AppCompatActivity() {
 
@@ -75,7 +75,12 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var tracksAdapterHistory: TracksAdapterHistory
 
     // Отложенный поиск
+    private var searchText: String = ""
+    private val searchRunnable = Runnable { searchTracks(searchText) }
+
     private val handler = Handler(Looper.getMainLooper())
+
+    // fun
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -107,7 +112,7 @@ class SearchActivity : AppCompatActivity() {
 
         // Обработка нажатия на элемент списка найденных трэков.
         tracksAdapterHistory.onTrackClickListenerAdapter =
-            OnTrackClickListener{
+            OnTrackClickListener {
                 openAudioPlayer(it)
             }
 
@@ -149,21 +154,19 @@ class SearchActivity : AppCompatActivity() {
 
                 // Обработка нажатия на элемент списка найденных трэков.
                 tracksAdapterHistory.onTrackClickListenerAdapter =
-                    OnTrackClickListener{
+                    OnTrackClickListener {
                         openAudioPlayer(it)
                     }
 
                 rvTracksHistory.adapter = tracksAdapterHistory
-
-
                 vgHistory.isVisible = true
+                rvTracks.isVisible = false
 
             } else {
                 vgHistory.isVisible = false
             }
 
         }
-
 
         // Нажатие на кнопку очистки поля поиска
         btClear.setOnClickListener {
@@ -172,7 +175,9 @@ class SearchActivity : AppCompatActivity() {
             etSearch.setText("")
 
             // скрытие клавиатуры
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
             inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
 
             // скрытие картинки и текста "Ничего не найдено"
@@ -200,19 +205,20 @@ class SearchActivity : AppCompatActivity() {
 
                     // Обработка нажатия на элемент списка найденных трэков.
                     tracksAdapterHistory.onTrackClickListenerAdapter =
-                        OnTrackClickListener{
+                        OnTrackClickListener {
                             openAudioPlayer(it)
                         }
 
                     rvTracksHistory.adapter = tracksAdapterHistory
                     vgHistory.isVisible = true
+                    rvTracks.isVisible = false
 
                 } else {
 
                     vgHistory.isVisible = false
+                    searchText = s.toString()
 
-                    searchDebounce(s.toString())
-
+                    searchDebounce()
                 }
 
             }
@@ -239,6 +245,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+
     // При смене ориентации экрана сохраняем последнюю строку поиска
     override fun onSaveInstanceState(outState: Bundle) {
 
@@ -249,15 +256,17 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+
     // При смене ориентации экрана восстанавливаем последнюю строку поиска
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
 
         super.onRestoreInstanceState(savedInstanceState)
 
         val etSearch = findViewById<EditText>(R.id.searchEditText)
-        etSearch.setText(savedInstanceState.getString(SEARCH_EDIT_TEXT,""))
+        etSearch.setText(savedInstanceState.getString(SEARCH_EDIT_TEXT, ""))
 
     }
+
 
     // Функция получения трэков с сервера и отражения их в списке
     private fun searchTracks(wordToSearch: String) {
@@ -295,7 +304,7 @@ class SearchActivity : AppCompatActivity() {
 
                         // Обработка нажатия на элемент списка найденных трэков.
                         tracksAdapter.onTrackClickListenerAdapter =
-                            OnTrackClickListener{
+                            OnTrackClickListener {
                                 addTrackInHistoryList(it)
                                 openAudioPlayer(it)
                             }
@@ -304,6 +313,7 @@ class SearchActivity : AppCompatActivity() {
 
                         ivNothingWasFound.isVisible = false
                         tvNothingWasFound.isVisible = false
+
                         ivConnectionProblems.isVisible = false
                         tvConnectionProblems.isVisible = false
                         btConnectionProblems.isVisible = false
@@ -323,19 +333,32 @@ class SearchActivity : AppCompatActivity() {
             }
 
             fun showMessage(tpMessage: Int) {
+
                 when (tpMessage) {
                     TYPE_MESSAGE_CONNECTION_PROBLEMS -> {
+
                         rvTracks.isVisible = false
+
+                        ivNothingWasFound.isVisible = false
+                        tvNothingWasFound.isVisible = false
+
                         ivConnectionProblems.isVisible = true
                         tvConnectionProblems.isVisible = true
                         btConnectionProblems.isVisible = true
 
                         progressBar.isVisible = false
                     }
+
                     TYPE_MESSAGE_NOTHING_WAS_FOUND -> {
+
                         rvTracks.isVisible = false
+
                         ivNothingWasFound.isVisible = true
                         tvNothingWasFound.isVisible = true
+
+                        ivConnectionProblems.isVisible = false
+                        tvConnectionProblems.isVisible = false
+                        btConnectionProblems.isVisible = false
 
                         progressBar.isVisible = false
                     }
@@ -345,16 +368,13 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+
     // Функция поиска через 2 секунды после остановки ввода пользователем.
-    private fun searchDebounce(searchText: String){
-
-        val searchRunnable = Runnable { searchTracks(searchText) }
-
+    private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
-
         handler.postDelayed(searchRunnable, SEARCH_DEBUNCE_DELAY)
-
     }
+
 
     private fun addTrackInHistoryList(newTrack: Track) {
 
@@ -365,7 +385,7 @@ class SearchActivity : AppCompatActivity() {
             localTracks.add(newTrack)
         } else {
 
-            val foundTrack = localTracks.find{
+            val foundTrack = localTracks.find {
                 it == newTrack
             }
 
@@ -390,6 +410,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+
     fun saveLocalTracks(tracksList: MutableList<Track>) {
         val json: String = gson.toJson(tracksList)
         sharedPrefs
@@ -398,10 +419,10 @@ class SearchActivity : AppCompatActivity() {
             .apply()
     }
 
+
     fun getLocalTracks(): MutableList<Track> {
 
         var tracksList: MutableList<Track> = mutableListOf()
-
         val json: String? = sharedPrefs.getString(TRACKS_HISTORY, null)
 
         if (json != null) {
@@ -411,22 +432,22 @@ class SearchActivity : AppCompatActivity() {
         return tracksList
     }
 
+
     private fun openAudioPlayer(track: Track) {
 
-        if (clickDebounce()){
+        if (clickDebounce()) {
 
             val displayIntent = Intent(this, AudioPlayerActivity::class.java)
-
             val trackjson: String = gson.toJson(track)
 
             displayIntent.putExtra(AppPlaylistMaker.TRACK_JSON, trackjson)
 
             startActivity(displayIntent)
-
         }
     }
 
-    private fun clickDebounce() : Boolean {
+
+    private fun clickDebounce(): Boolean {
 
         val current = isClickAllowed
 

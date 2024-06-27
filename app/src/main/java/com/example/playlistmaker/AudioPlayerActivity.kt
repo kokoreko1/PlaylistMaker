@@ -198,7 +198,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
                 val elapsedTime = System.currentTimeMillis() - startTime
 
-                val seconds = secondsPlay + elapsedTime / DELAY
+                var seconds = secondsPlay + elapsedTime / DELAY
 
                 when (playerState) {
 
@@ -221,7 +221,11 @@ class AudioPlayerActivity : AppCompatActivity() {
 
                         secondsPlay = 0
 
+                        seconds = 0
+
                         buttonPlay.setImageResource(R.drawable.button_play)
+
+                        tvPlayTime?.text = String.format("%d:%02d", seconds / 60, seconds % 60)
 
                     }
                 }
