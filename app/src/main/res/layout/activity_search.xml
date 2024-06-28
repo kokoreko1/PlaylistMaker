@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
             android:layout_marginStart="@dimen/margin_primary"
-            android:contentDescription="@string/settings"
+            android:contentDescription="@string/search"
             android:paddingStart="@dimen/margin_primary_dvd_2"
             android:paddingTop="@dimen/margin_primary_dvd_2"
             android:paddingEnd="@dimen/margin_primary_dvd_2"

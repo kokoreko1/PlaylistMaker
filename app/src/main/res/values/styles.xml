@@ -65,9 +65,14 @@
     </style>
 
     <style name="Switch_Style_settings">
+
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/panel_text_size</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
+
+        <item name="thumbTint">@color/yp_text_gray</item>
+        <item name="trackTint">@color/yp_light_gray</item>
+
     </style>
 
     <!-- *****************************-->

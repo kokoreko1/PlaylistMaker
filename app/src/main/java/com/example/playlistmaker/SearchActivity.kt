@@ -18,21 +18,16 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.math.BigDecimal
-import java.math.RoundingMode
-import kotlin.random.Random
 
 private const val NUMBER_OF_TRACKS_IN_THE_HISTORY_LIST = 10
 
@@ -76,7 +71,8 @@ class SearchActivity : AppCompatActivity() {
 
     // Отложенный поиск
     private var searchText: String = ""
-    private val searchRunnable = Runnable { searchTracks(searchText) }
+    private var performSearch: Boolean = true
+    private val searchRunnable = Runnable { searchTracks() }
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -134,7 +130,8 @@ class SearchActivity : AppCompatActivity() {
         // Нажатие на кнопку "Обновить при проблемах с соединением".
         btConnectionProblems.setOnClickListener {
             // Получение трэков с сервера.
-            searchTracks(etSearch.text.toString())
+            //searchTracks(etSearch.text.toString())
+            searchTracks()
         }
 
         // Нажатие на кнопку Очистить историю.
@@ -213,12 +210,17 @@ class SearchActivity : AppCompatActivity() {
                     vgHistory.isVisible = true
                     rvTracks.isVisible = false
 
+                    performSearch = false
+
                 } else {
 
                     vgHistory.isVisible = false
                     searchText = s.toString()
 
+                    performSearch = true
+
                     searchDebounce()
+
                 }
 
             }
@@ -238,7 +240,8 @@ class SearchActivity : AppCompatActivity() {
         etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // получить трэки с сервера
-                searchTracks(etSearch.text.toString())
+                //searchTracks(etSearch.text.toString())
+                searchTracks()
             }
             false
         }
@@ -269,7 +272,11 @@ class SearchActivity : AppCompatActivity() {
 
 
     // Функция получения трэков с сервера и отражения их в списке
-    private fun searchTracks(wordToSearch: String) {
+    private fun searchTracks() {
+
+        if (performSearch == false) {
+            return
+        }
 
         val ivNothingWasFound = findViewById<ImageView>(R.id.image_nothing_was_found)
         val tvNothingWasFound = findViewById<TextView>(R.id.text_nothing_was_found)
@@ -283,7 +290,7 @@ class SearchActivity : AppCompatActivity() {
 
         val rvTracks = findViewById<RecyclerView>(R.id.recycler_view_tracks)
 
-        iTunesAPIService.search(wordToSearch).enqueue(object : Callback<TracksResponse> {
+        iTunesAPIService.search(searchText).enqueue(object : Callback<TracksResponse> {
 
             override fun onResponse(
                 call: Call<TracksResponse>,
@@ -363,7 +370,7 @@ class SearchActivity : AppCompatActivity() {
                         progressBar.isVisible = false
                     }
                 }
-            }
+            }           // fun showMessage(tpMessage: Int) {
         })
 
     }
