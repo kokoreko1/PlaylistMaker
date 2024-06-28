@@ -54,7 +54,7 @@
 
         <item name="android:textColor">@color/yp_white</item>
         <item name="android:textSize">@dimen/panel_text_size</item>
-        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
 
     <style name="Image_Style_settings">
@@ -64,9 +64,14 @@
     </style>
 
     <style name="Switch_Style_settings">
+
         <item name="android:textColor">@color/yp_white</item>
         <item name="android:textSize">@dimen/panel_text_size</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
+
+        <item name="thumbTint">@color/yp_blue</item>
+        <item name="trackTint">@color/yp_blue_light</item>
+
     </style>
 
     <!-- *****************************-->

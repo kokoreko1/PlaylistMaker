@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.util.Log
 import android.view.View
@@ -14,8 +16,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,11 +28,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.math.BigDecimal
-import java.math.RoundingMode
-import kotlin.random.Random
 
-private const val  NUMBER_OF_TRACKS_IN_THE_HISTORY_LIST = 1
+private const val NUMBER_OF_TRACKS_IN_THE_HISTORY_LIST = 10
 
 class SearchActivity : AppCompatActivity() {
 
@@ -43,6 +42,13 @@ class SearchActivity : AppCompatActivity() {
 
         private const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
         private const val TRACKS_HISTORY = "tracks_history"
+
+        // отложенный поиск через 2 сек
+        private const val SEARCH_DEBUNCE_DELAY = 2000L
+
+        // нажатие на элемент списка не чаще одного раза в секунду
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private var isClickAllowed = true
 
     }
 
@@ -63,6 +69,15 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var tracksAdapterHistory: TracksAdapterHistory
 
+    // Отложенный поиск
+    private var searchText: String = ""
+    private var performSearch: Boolean = true
+    private val searchRunnable = Runnable { searchTracks() }
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    // fun
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -70,7 +85,9 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         val ivBack = findViewById<ImageView>(R.id.image_back)
+
         val etSearch = findViewById<EditText>(R.id.searchEditText)
+
         val btClear = findViewById<ImageView>(R.id.clearIcon)
 
         val rvTracks = findViewById<RecyclerView>(R.id.recycler_view_tracks)
@@ -91,7 +108,7 @@ class SearchActivity : AppCompatActivity() {
 
         // Обработка нажатия на элемент списка найденных трэков.
         tracksAdapterHistory.onTrackClickListenerAdapter =
-            OnTrackClickListener{
+            OnTrackClickListener {
                 openAudioPlayer(it)
             }
 
@@ -113,7 +130,8 @@ class SearchActivity : AppCompatActivity() {
         // Нажатие на кнопку "Обновить при проблемах с соединением".
         btConnectionProblems.setOnClickListener {
             // Получение трэков с сервера.
-            searchTracks(etSearch.text.toString())
+            //searchTracks(etSearch.text.toString())
+            searchTracks()
         }
 
         // Нажатие на кнопку Очистить историю.
@@ -133,21 +151,19 @@ class SearchActivity : AppCompatActivity() {
 
                 // Обработка нажатия на элемент списка найденных трэков.
                 tracksAdapterHistory.onTrackClickListenerAdapter =
-                    OnTrackClickListener{
+                    OnTrackClickListener {
                         openAudioPlayer(it)
                     }
 
                 rvTracksHistory.adapter = tracksAdapterHistory
-
-
                 vgHistory.isVisible = true
+                rvTracks.isVisible = false
 
             } else {
                 vgHistory.isVisible = false
             }
 
         }
-
 
         // Нажатие на кнопку очистки поля поиска
         btClear.setOnClickListener {
@@ -156,7 +172,9 @@ class SearchActivity : AppCompatActivity() {
             etSearch.setText("")
 
             // скрытие клавиатуры
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
             inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
 
             // скрытие картинки и текста "Ничего не найдено"
@@ -184,15 +202,25 @@ class SearchActivity : AppCompatActivity() {
 
                     // Обработка нажатия на элемент списка найденных трэков.
                     tracksAdapterHistory.onTrackClickListenerAdapter =
-                        OnTrackClickListener{
+                        OnTrackClickListener {
                             openAudioPlayer(it)
                         }
 
                     rvTracksHistory.adapter = tracksAdapterHistory
                     vgHistory.isVisible = true
+                    rvTracks.isVisible = false
+
+                    performSearch = false
 
                 } else {
+
                     vgHistory.isVisible = false
+                    searchText = s.toString()
+
+                    performSearch = true
+
+                    searchDebounce()
+
                 }
 
             }
@@ -212,12 +240,14 @@ class SearchActivity : AppCompatActivity() {
         etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // получить трэки с сервера
-                searchTracks(etSearch.text.toString())
+                //searchTracks(etSearch.text.toString())
+                searchTracks()
             }
             false
         }
 
     }
+
 
     // При смене ориентации экрана сохраняем последнюю строку поиска
     override fun onSaveInstanceState(outState: Bundle) {
@@ -229,18 +259,24 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+
     // При смене ориентации экрана восстанавливаем последнюю строку поиска
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
 
         super.onRestoreInstanceState(savedInstanceState)
 
         val etSearch = findViewById<EditText>(R.id.searchEditText)
-        etSearch.setText(savedInstanceState.getString(SEARCH_EDIT_TEXT,""))
+        etSearch.setText(savedInstanceState.getString(SEARCH_EDIT_TEXT, ""))
 
     }
 
+
     // Функция получения трэков с сервера и отражения их в списке
-    private fun searchTracks(wordToSearch: String) {
+    private fun searchTracks() {
+
+        if (performSearch == false) {
+            return
+        }
 
         val ivNothingWasFound = findViewById<ImageView>(R.id.image_nothing_was_found)
         val tvNothingWasFound = findViewById<TextView>(R.id.text_nothing_was_found)
@@ -249,9 +285,12 @@ class SearchActivity : AppCompatActivity() {
         val tvConnectionProblems = findViewById<TextView>(R.id.text_connection_problems)
         val btConnectionProblems = findViewById<Button>(R.id.button_update)
 
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar.isVisible = true
+
         val rvTracks = findViewById<RecyclerView>(R.id.recycler_view_tracks)
 
-        iTunesAPIService.search(wordToSearch).enqueue(object : Callback<TracksResponse> {
+        iTunesAPIService.search(searchText).enqueue(object : Callback<TracksResponse> {
 
             override fun onResponse(
                 call: Call<TracksResponse>,
@@ -272,7 +311,7 @@ class SearchActivity : AppCompatActivity() {
 
                         // Обработка нажатия на элемент списка найденных трэков.
                         tracksAdapter.onTrackClickListenerAdapter =
-                            OnTrackClickListener{
+                            OnTrackClickListener {
                                 addTrackInHistoryList(it)
                                 openAudioPlayer(it)
                             }
@@ -281,9 +320,12 @@ class SearchActivity : AppCompatActivity() {
 
                         ivNothingWasFound.isVisible = false
                         tvNothingWasFound.isVisible = false
+
                         ivConnectionProblems.isVisible = false
                         tvConnectionProblems.isVisible = false
                         btConnectionProblems.isVisible = false
+
+                        progressBar.isVisible = false
 
                     }
                 } else {
@@ -298,23 +340,48 @@ class SearchActivity : AppCompatActivity() {
             }
 
             fun showMessage(tpMessage: Int) {
+
                 when (tpMessage) {
                     TYPE_MESSAGE_CONNECTION_PROBLEMS -> {
+
                         rvTracks.isVisible = false
+
+                        ivNothingWasFound.isVisible = false
+                        tvNothingWasFound.isVisible = false
+
                         ivConnectionProblems.isVisible = true
                         tvConnectionProblems.isVisible = true
                         btConnectionProblems.isVisible = true
+
+                        progressBar.isVisible = false
                     }
+
                     TYPE_MESSAGE_NOTHING_WAS_FOUND -> {
+
                         rvTracks.isVisible = false
+
                         ivNothingWasFound.isVisible = true
                         tvNothingWasFound.isVisible = true
+
+                        ivConnectionProblems.isVisible = false
+                        tvConnectionProblems.isVisible = false
+                        btConnectionProblems.isVisible = false
+
+                        progressBar.isVisible = false
                     }
                 }
-            }
+            }           // fun showMessage(tpMessage: Int) {
         })
 
     }
+
+
+    // Функция поиска через 2 секунды после остановки ввода пользователем.
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBUNCE_DELAY)
+    }
+
 
     private fun addTrackInHistoryList(newTrack: Track) {
 
@@ -325,7 +392,7 @@ class SearchActivity : AppCompatActivity() {
             localTracks.add(newTrack)
         } else {
 
-            val foundTrack = localTracks.find{
+            val foundTrack = localTracks.find {
                 it == newTrack
             }
 
@@ -350,6 +417,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+
     fun saveLocalTracks(tracksList: MutableList<Track>) {
         val json: String = gson.toJson(tracksList)
         sharedPrefs
@@ -358,10 +426,10 @@ class SearchActivity : AppCompatActivity() {
             .apply()
     }
 
+
     fun getLocalTracks(): MutableList<Track> {
 
         var tracksList: MutableList<Track> = mutableListOf()
-
         val json: String? = sharedPrefs.getString(TRACKS_HISTORY, null)
 
         if (json != null) {
@@ -371,15 +439,30 @@ class SearchActivity : AppCompatActivity() {
         return tracksList
     }
 
+
     private fun openAudioPlayer(track: Track) {
 
-        val displayIntent = Intent(this, AudioPlayerActivity::class.java)
+        if (clickDebounce()) {
 
-        val trackjson: String = gson.toJson(track)
+            val displayIntent = Intent(this, AudioPlayerActivity::class.java)
+            val trackjson: String = gson.toJson(track)
 
-        displayIntent.putExtra(AppPlaylistMaker.TRACK_JSON, trackjson)
+            displayIntent.putExtra(AppPlaylistMaker.TRACK_JSON, trackjson)
 
-        startActivity(displayIntent)
+            startActivity(displayIntent)
+        }
+    }
 
+
+    private fun clickDebounce(): Boolean {
+
+        val current = isClickAllowed
+
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+
+        return current
     }
 }

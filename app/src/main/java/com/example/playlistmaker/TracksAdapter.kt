@@ -21,7 +21,7 @@ class TracksAdapter(private val tracks: MutableList<Track>?) : RecyclerView.Adap
     }
     override fun onBindViewHolder(holder: TracksViewHolder, position: Int) {
 
-        val track: Track = tracks?.get(position) ?: Track("","",0,"",0,"","","","")
+        val track: Track = tracks?.get(position) ?: Track("","",0,"",0,"","","","","")
 
         holder.bind(track)
 

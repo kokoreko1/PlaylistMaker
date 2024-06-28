@@ -5,12 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/panel_height">
 
         <ImageView
             android:id="@+id/image_back"
+            style="@style/TextView_Style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -26,22 +27,24 @@
             style="@style/TextView_Style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="28dp"
             android:fontFamily="@font/ys_display_medium"
             android:text="@string/settings"
             android:textSize="@dimen/primary_text_size" />
 
-    </FrameLayout>
+    </LinearLayout>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/themeSwitcher"
         style="@style/Switch_Style_settings"
         android:layout_width="match_parent"
         android:layout_height="@dimen/panel_height"
-        android:layout_gravity="start"
+        android:layout_gravity="start|top"
+        android:layout_marginTop="@dimen/margin_24"
         android:layout_marginStart="@dimen/margin_primary"
         android:layout_marginEnd="@dimen/margin_primary_dvd_2"
-        android:text="@string/dark_theme" />
+        android:text="@string/dark_theme"/>
 
     <FrameLayout
         android:layout_width="match_parent"
