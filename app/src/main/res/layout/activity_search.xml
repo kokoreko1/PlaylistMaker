@@ -69,10 +69,8 @@
             android:inputType="text"
             android:lines="1"
             android:singleLine="true"
-            android:textSize="@dimen/text_size_edittext" />
-        <!-- кнопка переноса строки будет заменена на кнопку Done -->
-        <!-- android:imeOptions="actionDone"-->
-        <!-- android:singleLine="true"-->
+            android:textSize="@dimen/text_size_edittext"
+            android:textCursorDrawable="@drawable/color_cursor"/>
 
         <ImageView
             android:id="@+id/clearIcon"

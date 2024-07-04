@@ -39,6 +39,7 @@ class SearchActivity : AppCompatActivity() {
 
         private const val TYPE_MESSAGE_NOTHING_WAS_FOUND = 1
         private const val TYPE_MESSAGE_CONNECTION_PROBLEMS = 2
+        private const val TYPE_MESSAGE_EMPTY_SEARCH_TEXT = 3
 
         private const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
         private const val TRACKS_HISTORY = "tracks_history"
@@ -130,7 +131,6 @@ class SearchActivity : AppCompatActivity() {
         // Нажатие на кнопку "Обновить при проблемах с соединением".
         btConnectionProblems.setOnClickListener {
             // Получение трэков с сервера.
-            //searchTracks(etSearch.text.toString())
             searchTracks()
         }
 
@@ -178,8 +178,8 @@ class SearchActivity : AppCompatActivity() {
             inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
 
             // скрытие картинки и текста "Ничего не найдено"
-            ivNothingWasFound.visibility = View.GONE
-            tvNothingWasFound.visibility = View.GONE
+            ivNothingWasFound.isVisible = false
+            tvNothingWasFound.isVisible = false
 
             rvTracks.adapter = tracksAdapter
         }
@@ -211,6 +211,10 @@ class SearchActivity : AppCompatActivity() {
                     rvTracks.isVisible = false
 
                     performSearch = false
+
+//                    // скрытие картинки и текста "Ничего не найдено"
+//                    ivNothingWasFound.isVisible = false
+//                    tvNothingWasFound.isVisible = false
 
                 } else {
 
@@ -299,8 +303,14 @@ class SearchActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     if ((response.body()?.results?.size ?: 0) == 0) {
 
-                        // Если ничего на сервере не найдено, показываем сообщение Ничего не найдено.
-                        showMessage(TYPE_MESSAGE_NOTHING_WAS_FOUND)
+                        if (searchText.isEmpty()) {
+
+                            showMessage(TYPE_MESSAGE_EMPTY_SEARCH_TEXT)
+
+                        } else {
+                            // Если ничего на сервере не найдено, показываем сообщение Ничего не найдено.
+                            showMessage(TYPE_MESSAGE_NOTHING_WAS_FOUND)
+                        }
 
                     } else {
 
@@ -342,6 +352,7 @@ class SearchActivity : AppCompatActivity() {
             fun showMessage(tpMessage: Int) {
 
                 when (tpMessage) {
+
                     TYPE_MESSAGE_CONNECTION_PROBLEMS -> {
 
                         rvTracks.isVisible = false
@@ -369,6 +380,21 @@ class SearchActivity : AppCompatActivity() {
 
                         progressBar.isVisible = false
                     }
+
+                    TYPE_MESSAGE_EMPTY_SEARCH_TEXT -> {
+
+                        rvTracks.isVisible = false
+
+                        ivNothingWasFound.isVisible = false
+                        tvNothingWasFound.isVisible = false
+
+                        ivConnectionProblems.isVisible = false
+                        tvConnectionProblems.isVisible = false
+                        btConnectionProblems.isVisible = false
+
+                        progressBar.isVisible = false
+                    }
+
                 }
             }           // fun showMessage(tpMessage: Int) {
         })
